@@ -43,5 +43,13 @@ public final class SurfaceView: UIView, IComponent {
 		}
 		
 		layer.cornerRadius = props.radius
+		
+		if let border = props.border {
+			layer.borderColor = border.color.cgColor
+			layer.borderWidth = border.width
+		} else {
+			layer.borderColor = nil
+			layer.borderWidth = 0
+		}
 	}
 }

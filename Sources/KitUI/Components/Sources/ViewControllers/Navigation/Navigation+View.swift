@@ -46,7 +46,6 @@ public final class NavigationViewController: UINavigationController, IComponent 
 		let oldStagedChangeset = StagedChangeset(source: propsIDs, target: viewIDs)
 		
 		if !oldStagedChangeset.isEmpty {
-			pendingProps = props
 			return
 		}
 		

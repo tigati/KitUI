@@ -14,9 +14,16 @@ public final class WebContentView: ComponentView, IComponent {
 	
 	private var props: WebContent?
 	
+	public override func setup() {
+		addSubview(webView)
+	}
+	
 	private lazy var webView: WKWebView = {
 		let config = WKWebViewConfiguration()
 		let webView = WKWebView(frame: .zero, configuration: config)
+		webView.isOpaque = false
+		webView.backgroundColor = UIColor.clear
+		webView.scrollView.backgroundColor = UIColor.clear
 		webView.navigationDelegate = self
 		return webView
 	}()
@@ -29,5 +36,9 @@ public final class WebContentView: ComponentView, IComponent {
 extension WebContentView: WKNavigationDelegate {
 	public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
 		props?.onFinishLoading.perform()
+	}
+	
+	public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+		
 	}
 }
