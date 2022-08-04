@@ -21,6 +21,10 @@ public struct Dispatch<T> {
 			closure(map(input))
 		}
 	}
+	
+	public func perform(_ value: T) {
+		closure(value)
+	}
 }
 
 extension Dispatch {

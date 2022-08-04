@@ -8,9 +8,8 @@ public struct TextField: IViewProps, Equatable {
 	public static let initial = TextField(
 		text: nil,
 		placeholder: nil,
-		isSecureTextEntry: false,
-		keyboardType: .default,
 		state: .blured(.init(onTap: .empty)),
+		traits: TextInputTraits(),
 		style: .initial
 	)
 	
@@ -18,9 +17,8 @@ public struct TextField: IViewProps, Equatable {
 	
 	public let text: String?
 	public let placeholder: String?
-	public let isSecureTextEntry: Bool
-	public let keyboardType: UIKeyboardType
 	public let state: State
+	public let traits: TextInputTraits
 	public let style: Style
 	
 	public enum State: Equatable {

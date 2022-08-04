@@ -38,6 +38,22 @@ public extension MetaView {
 	static func hStack(
 		spacing: CGFloat = .zero,
 		alignment: VerticalAlignment = .center,
+		_ items: [MetaView]
+	) -> MetaView {
+		.init(
+			props: Stack(
+				items: items,
+				axis: .horizontal,
+				spacing: spacing,
+				alignment: .init(horizontal: .center, vertical: alignment)
+			)
+		)
+	}
+	
+	/// Компонент HStack
+	static func hStack(
+		spacing: CGFloat = .zero,
+		alignment: VerticalAlignment = .center,
 		_ items: MetaView...
 	) -> MetaView {
 		.hStack(
@@ -51,15 +67,12 @@ public extension MetaView {
 	static func hStack(
 		spacing: CGFloat = .zero,
 		alignment: VerticalAlignment = .center,
-		_ items: [MetaView]
+		_ items: MetaView?...
 	) -> MetaView {
-		.init(
-			props: Stack(
-				items: items,
-				axis: .horizontal,
-				spacing: spacing,
-				alignment: .init(horizontal: .center, vertical: alignment)
-			)
+		.hStack(
+			spacing: spacing,
+			alignment: alignment,
+			items.compactMap { $0 }
 		)
 	}
 }

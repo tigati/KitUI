@@ -51,12 +51,14 @@ public final class NavigationViewController: UINavigationController, IComponent 
 		
 		let stagedChangeset = StagedChangeset(source: oldStack, target: newStack)
 		
-		var newViewControllers: [UIViewController] = viewControllers
+		var newViewControllers: [UIViewController?] = viewControllers
 		
 		for changeset in stagedChangeset {
 			for delete in changeset.elementDeleted {
-				newViewControllers.remove(at: delete.element)
+				newViewControllers[delete.element] = nil
 			}
+			
+			newViewControllers = newViewControllers.filter { $0 != nil }
 			
 			for insert in changeset.elementInserted {
 				let newVC = newStack[insert.element]
@@ -66,8 +68,9 @@ public final class NavigationViewController: UINavigationController, IComponent 
 			}
 			
 			for update in changeset.elementUpdated {
-				let viewController = newViewControllers[update.element]
-				newStack[update.element].update(viewController)
+				if let viewController = newViewControllers[update.element] {
+					newStack[update.element].update(viewController)
+				}
 			}
 			
 			for (source, target) in changeset.elementMoved {
@@ -75,7 +78,9 @@ public final class NavigationViewController: UINavigationController, IComponent 
 			}
 		}
 		
-		setViewControllers(newViewControllers, animated: true)
+		let nonNilViewControllers = newViewControllers.compactMap { $0 }
+		
+		setViewControllers(nonNilViewControllers, animated: true)
 		
 		setProgress(props.progress)
 	}

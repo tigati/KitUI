@@ -1,4 +1,5 @@
 import UIKit
+import King
 
 public final class ImageView: UIImageView, IComponent {
 
@@ -16,8 +17,8 @@ public final class ImageView: UIImageView, IComponent {
 				image = UIImage(named: bundled.name, in: bundled.bundle, compatibleWith: nil)
 			case let .url(url):
 				break
-//			case .external(let imageURL):
-//				kf.setImage(with: imageURL)
+			case .external(let imageURL):
+				
 			}
 		} else {
 			image = nil

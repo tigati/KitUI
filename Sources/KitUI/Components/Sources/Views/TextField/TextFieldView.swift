@@ -36,8 +36,9 @@ public final class TextFieldView: UITextField, IComponent {
 	// MARK: - Public methods
 	
 	public func render(props: TextField) {
-		defer { self.props = props }
-		switch (self.props.state, props.state) {
+		let oldProps = self.props
+		self.props = props
+		switch (oldProps.state, props.state) {
 		case (.blured, .focused):
 			isUserInteractionEnabled = true
 			if !isFirstResponder {
@@ -52,16 +53,13 @@ public final class TextFieldView: UITextField, IComponent {
 			break
 		}
 		
-		keyboardType = props.keyboardType
-		
 		text = props.text
-		if self.props.isSecureTextEntry != props.isSecureTextEntry {
-			togglePasswordVisibility()
-		}
+		
+		setTextInputTraits(traits: props.traits, oldTraits: oldProps.traits)
 		
 		if
 			let placeholderText = props.placeholder,
-			self.props.style.placeholder != props.style.placeholder
+			oldProps.style.placeholder != props.style.placeholder
 		{
 			let placeholderAttributes = props.style.placeholder.attributes(
 				for: textAlignment,
@@ -78,8 +76,22 @@ public final class TextFieldView: UITextField, IComponent {
 		font = props.style.text.font
 		textColor = props.style.textColor
 		
-		if self.props.style != props.style {
+		if oldProps.style != props.style {
 			setNeedsLayout()
+		}
+	}
+	
+	private func setTextInputTraits(traits: TextInputTraits, oldTraits: TextInputTraits) {
+		keyboardType = traits.keyboardType
+		keyboardAppearance = traits.keyboardAppearance
+		returnKeyType = traits.returnKeyType
+		textContentType = traits.textContentType
+		autocapitalizationType = traits.autocapitalizationType
+		autocorrectionType = traits.autocorrectionType
+		spellCheckingType = traits.spellCheckingType
+		
+		if traits.secureTextEntry != oldTraits.secureTextEntry {
+			togglePasswordVisibility()
 		}
 	}
 	

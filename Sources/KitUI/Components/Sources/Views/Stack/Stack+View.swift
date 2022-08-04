@@ -119,14 +119,17 @@ public final class StackView: UIView, IComponent {
 			return
 		}
 		
-		var views: [UIView] = getComponentViews()
+		var views: [UIView?] = getComponentViews()
 		
 		for changes in changeSet {
 			for delete in changes.elementDeleted {
 				let view = views[delete.element]
-				view.removeFromSuperview()
-				views.remove(at: delete.element)
+				view?.removeFromSuperview()
+				views[delete.element] = nil
 			}
+			
+			views = views.filter { $0 != nil }
+			
 			for insert in changes.elementInserted {
 				let component = changes.data[insert.element].makeView()
 				views.insert(component, at: insert.element)
@@ -134,15 +137,18 @@ public final class StackView: UIView, IComponent {
 				addSubview(component)
 			}
 			for update in changes.elementUpdated {
-				let component = views[update.element]
-				changes.data[update.element].update(component)
+				if let component = views[update.element] {
+					changes.data[update.element].update(component)
+				}
 			}
 			for (source, target) in changes.elementMoved {
 				views.swapAt(source.element, target.element)
 			}
 		}
 		
-		self.components = Components(props: props, views: views)
+		let newViews = views.compactMap { $0 }
+		
+		self.components = Components(props: props, views: newViews)
 		
 		setNeedsLayout()
 	}
