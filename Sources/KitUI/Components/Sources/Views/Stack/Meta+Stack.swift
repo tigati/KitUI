@@ -6,6 +6,19 @@ public extension MetaView {
 	static func vStack(
 		spacing: CGFloat = .zero,
 		alignment: HorizontalAlignment = .center,
+		_ items: MetaView?...
+	) -> MetaView {
+		vStack(
+			spacing: spacing,
+			alignment: alignment,
+			items.compactMap { $0 }
+		)
+	}
+	
+	/// Компонент VStack
+	static func vStack(
+		spacing: CGFloat = .zero,
+		alignment: HorizontalAlignment = .center,
 		_ items: MetaView...
 	) -> MetaView {
 		vStack(
