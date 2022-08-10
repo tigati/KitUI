@@ -109,7 +109,7 @@ public final class RegularViewController: ViewController & IComponent {
 		let modalViewController = modalVC.viewController.makeView()
 		modalViewController.modalPresentationStyle = modalVC.modalPresentationStyle
 		modalVC.viewController.update(modalViewController)
-		if #available(iOS 15, *) {
+		if #available(iOS 13, *) {
 			modalViewController.isModalInPresentation = true
 		}
 		present(modalViewController, animated: true) {
