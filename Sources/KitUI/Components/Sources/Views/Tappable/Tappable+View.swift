@@ -98,6 +98,7 @@ public final class TappableView: UIControl, IComponent {
 	}
 
 	private func updateVisual(props: Tappable) {
+		self.alpha = 1.0
 		switch state {
 		case .highlighted:
 			if let onHighlight = props.onHighlight {
@@ -108,6 +109,9 @@ public final class TappableView: UIControl, IComponent {
 		case .disabled:
 			if let onDisable = props.onDisable {
 				renderContent(onDisable)
+			} else {
+				renderContent(props.content)
+				self.alpha = props.style.disabledOpacity
 			}
 			scaleDown()
 		default:
