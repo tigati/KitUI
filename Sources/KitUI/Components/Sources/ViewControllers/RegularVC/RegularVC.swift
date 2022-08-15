@@ -13,6 +13,7 @@ public struct RegularVC: IViewProps, Equatable {
 	public let modalVC: ModalVC?
 	public let onViewDidLoad: ViewCommand?
 	public let onViewDidAppear: ViewCommand?
+	public let onViewDidDisappear: ViewCommand?
 
 	// MARK: - Lifecycle
 
@@ -21,13 +22,15 @@ public struct RegularVC: IViewProps, Equatable {
 		view: MetaView,
 		modalVC: ModalVC? = nil,
 		onViewDidLoad: ViewCommand? = nil,
-		onViewDidAppear: ViewCommand? = nil
+		onViewDidAppear: ViewCommand? = nil,
+		onViewDidDisappear: ViewCommand? = nil
 	) {
 		self.navigationBar = navigationBar
 		self.view = view
 		self.modalVC = modalVC
 		self.onViewDidLoad = onViewDidLoad
 		self.onViewDidAppear = onViewDidAppear
+		self.onViewDidDisappear = onViewDidDisappear
 	}
 }
 

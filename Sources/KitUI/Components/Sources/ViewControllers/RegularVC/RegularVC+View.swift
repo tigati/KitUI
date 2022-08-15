@@ -36,6 +36,11 @@ public final class RegularViewController: ViewController & IComponent {
 		super.viewDidAppear(animated)
 	}
 	
+	public override func viewDidDisappear(_ animated: Bool) {
+		props?.onViewDidDisappear?.perform()
+		super.viewDidDisappear(animated)
+	}
+	
 	public override var preferredStatusBarStyle: UIStatusBarStyle {
 		return .lightContent
 	}

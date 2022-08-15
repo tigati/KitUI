@@ -3,8 +3,8 @@ import UIKit
 
 public extension MetaView {
 	func fixedFrame(
-		width: Double,
-		height: Double
+		width: Double?,
+		height: Double?
 	) -> MetaView {
 		.init(
 			props: FixedFrame(

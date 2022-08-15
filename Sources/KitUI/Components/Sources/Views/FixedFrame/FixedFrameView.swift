@@ -8,8 +8,26 @@ public final class FixedFrameView: ComponentView, IComponent {
 	var contentView: UIView?
 	
 	public override func sizeThatFits(_ size: CGSize) -> CGSize {
-		guard let props = props else { return size }
-		return CGSize(width: props.width, height: props.height)
+		guard
+			let props = props,
+			let contentView = contentView
+		else { return size }
+		
+		if let width = props.width, let height = props.height {
+			return CGSize(width: width, height: height)
+		}
+		
+		if let height = props.height, props.width == nil {
+			let contentSize = contentView.sizeThatFits(CGSize(width: 0, height: height))
+			return CGSize(width: contentSize.width, height: height)
+		}
+		
+		if let width = props.width, props.height == nil {
+			let contentSize = contentView.sizeThatFits(CGSize(width: width, height: 0))
+			return CGSize(width: width, height: contentSize.height)
+		}
+		
+		return size
 	}
 	
 	public override func hitTest(

@@ -14,10 +14,10 @@ public struct Dispatch<T> {
 		}
 	}
 	
-	public func callAsFunction<TInput>(
-		_ map: @escaping (TInput) -> T
-	) -> ViewCommandWith<TInput> {
-		ViewCommandWith<TInput> { input in
+	public func callAsFunction<TValue>(
+		_ map: @escaping (TValue) -> T
+	) -> ViewCommandWith<TValue> {
+		ViewCommandWith<TValue> { input in
 			closure(map(input))
 		}
 	}

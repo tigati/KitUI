@@ -5,7 +5,7 @@ public final class ReturningViewCommandWith<TValue, TResult> {
 
 	// MARK: - Static
 	
-	public let id: String?
+	private(set) var id: String?
 
 	/// Пустая реализация для затычек
 	public static var empty: ReturningViewCommandWith<TValue, Void> {
@@ -64,5 +64,12 @@ extension ReturningViewCommandWith: Equatable {
 			return false
 		}
 		return lhsID == rhsID
+	}
+}
+
+extension ReturningViewCommandWith {
+	public func id(_ id: String) -> Self {
+		self.id = id
+		return self
 	}
 }

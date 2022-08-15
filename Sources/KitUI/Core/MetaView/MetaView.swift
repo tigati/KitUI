@@ -9,6 +9,9 @@ public final class MetaView: Equatable, Identifiable {
 	public let type: String
 	
 	public let viewType: UIView.Type
+	
+	public let tableCellViewType: UITableViewCell.Type
+	public let headerFooterViewType: UITableViewHeaderFooterView.Type
 
 	public private(set) var id: String?
 
@@ -46,6 +49,8 @@ public final class MetaView: Equatable, Identifiable {
 	) where TProps: Equatable, TProps.View: IComponent & UIView, TProps.View.Props == TProps {
 		self.type = TProps.type
 		self.viewType = TProps.View.self
+		self.tableCellViewType = TableCellView<TProps.View>.self
+		self.headerFooterViewType = TableHeaderFooterView<TProps.View>.self
 		self.id = id ?? TProps.type
 		self.props = props
 
@@ -57,7 +62,7 @@ public final class MetaView: Equatable, Identifiable {
 			guard
 				let view = view as? TProps.View,
 				let props = props as? TProps
-			else { return }
+			else { fatalError() }
 			view.render(props: props)
 		}
 		self.equals = { lhs, rhs in
