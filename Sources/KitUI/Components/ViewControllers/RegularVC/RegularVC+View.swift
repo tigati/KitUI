@@ -26,7 +26,10 @@ public final class RegularViewController: ViewController & IComponent {
 	
 	public override func viewWillAppear(_ animated: Bool) {
 		navigationController?.isNavigationBarHidden = props?.navigationBar == nil
-		navigationController?.navigationBar.barStyle = .black
+		navigationController?.navigationBar.barStyle = props?.navigationBar?.style.barStyle ?? .default
+		
+		navigationItem.backBarButtonItem?.tintColor = props?.navigationBar?.style.backButtonTintColor
+		
 		super.viewWillAppear(animated)
 	}
 	
