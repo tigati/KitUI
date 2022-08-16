@@ -19,4 +19,6 @@ extension MetaVC {
 			)
 		)
 	}
+	
+	public static let nilNavigation = MetaVC.init(props: Optional<Navigation>.none)
 }

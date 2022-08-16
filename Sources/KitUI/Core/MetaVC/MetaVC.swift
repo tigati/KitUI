@@ -56,7 +56,10 @@ public final class MetaVC: Equatable {
 		}
 
 		self._makeView = {
-			let view = props!.makeView(viewType: TProps.View.self)
+			guard let view = props?.makeView(viewType: TProps.View.self) else {
+				let viewType = TProps.View.self
+				return viewType.init()
+			}
 			return view
 		}
 		

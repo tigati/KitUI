@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import DifferenceKit
 
 extension TabBarVC {
 	public typealias View = TabBarViewController
@@ -9,6 +10,8 @@ extension TabBarVC {
 public final class TabBarViewController: UITabBarController, IComponent {
 
 	// MARK: - Private properties
+	
+	private var _viewID: String = ""
 
 	private var props: TabBarVC = .initial
 
@@ -24,43 +27,52 @@ public final class TabBarViewController: UITabBarController, IComponent {
 	}
 
 	// MARK: - Public methods
+	
+	public override func setViewID(_ viewID: String) {
+		_viewID = viewID
+	}
+	
+	public override func getViewID() -> String {
+		_viewID
+	}
 
 	public func render(props: TabBarVC) {
 
 		let oldTabs = self.props.tabs
 		let newTabs = props.tabs
-//
-//		let changes = diff(old: oldTabs, new: newTabs)
-//
-//		var optionalNewViewControllers: [UIViewController?] = viewControllers ?? []
-//
-//		changes.forEach { change in
-//			switch change {
-//			case let .delete(delete):
-//				optionalNewViewControllers[delete.index] = nil
-//			case let .insert(insert):
-//				let viewController = insert.item.viewController.makeView()
-//				optionalNewViewControllers.insert(viewController, at: insert.index)
-//			case .move, .replace:
-//				break
-//			}
-//		}
-//
-//		let newViewControllers = optionalNewViewControllers.compactMap { $0 }
-//
-//		setViewControllers(newViewControllers, animated: false)
-//
-//		zip(newViewControllers, newTabs).forEach { viewController, tab in
-//			tab.viewController.update(viewController)
-//			viewController.tabBarItem.title = tab.title
-//			viewController.tabBarItem.image = tab.icon.image
-//		}
-//
-//		selectedIndex = props.selectedTabIndex
-//
-//		tabBar.tintColor = props.style.selectedColor
-//		tabBar.unselectedItemTintColor = props.style.unselectedColor
-//		tabBar.barTintColor = props.style.tabBarColor
+		
+		let diff = newTabs.count - oldTabs.count
+		
+		var newViewControllers: [UIViewController] = viewControllers ?? []
+		
+		// new tabs added
+		if diff > 0 {
+			let addedTabs = newTabs.suffix(diff)
+			addedTabs.forEach { tab in
+				let viewController = tab.viewController.makeView()
+				newViewControllers.append(viewController)
+			}
+			setViewControllers(newViewControllers, animated: true)
+		}
+		
+		// tabs removed
+		if diff < 0 {
+			newViewControllers.removeLast(abs(diff))
+			setViewControllers(newViewControllers, animated: true)
+		}
+		
+		selectedIndex = props.selectedTabIndex
+		let activeViewController = newViewControllers[props.selectedTabIndex]
+		props.tabs[props.selectedTabIndex].viewController.update(activeViewController)
+		
+		tabBar.tintColor = props.style.selectedColor
+		tabBar.unselectedItemTintColor = props.style.unselectedColor
+		tabBar.barTintColor = props.style.tabBarColor
+		
+		zip(newViewControllers, newTabs).forEach { viewController, tab in
+			viewController.tabBarItem.title = tab.title
+			viewController.tabBarItem.image = UIImage(named: tab.icon.name, in: tab.icon.bundle, compatibleWith: nil)
+		}
 
 		self.props = props
 	}

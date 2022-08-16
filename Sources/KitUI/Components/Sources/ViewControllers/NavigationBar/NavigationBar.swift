@@ -6,9 +6,10 @@ public struct NavigationBar: Equatable {
 	public let rightItems: [MetaView]?
 	
 	public init(
-		leftItems: [MetaView]?,
+		leftItems: [MetaView]? = nil,
 		title: MetaView,
-		rightItems: [MetaView]?)
+		rightItems: [MetaView]? = nil
+	)
 	{
 		self.leftItems = leftItems
 		self.title = title

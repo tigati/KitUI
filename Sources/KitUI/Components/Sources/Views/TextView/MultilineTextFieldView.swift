@@ -13,9 +13,14 @@ public final class MultilineTextFieldView: UITextView, IComponent {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
+	public override func layoutSubviews() {
+		super.layoutSubviews()
+		layout()
+	}
+	
 	var props: Props = .initial
 	
-	let placeholderLabel = UILabel()
+	let placeholderLabel = LabelView()
 	
 	func setup() {
 		isUserInteractionEnabled = false
@@ -39,7 +44,9 @@ public final class MultilineTextFieldView: UITextView, IComponent {
 		
 		text = props.text
 		
-		updatePlaceholder()
+		setTextInputTraits(traits: props.traits)
+		
+		updatePlaceholder(props: props)
 		
 		let oldProps = self.props
 		switch (oldProps.state, props.state) {
@@ -60,20 +67,68 @@ public final class MultilineTextFieldView: UITextView, IComponent {
 		}
 	}
 	
-	private func updatePlaceholder() {
+	private func setTextInputTraits(traits: TextInputTraits) {
+		keyboardType = traits.keyboardType
+		keyboardAppearance = traits.keyboardAppearance
+		returnKeyType = traits.returnKeyType
+		textContentType = traits.textContentType
+		autocapitalizationType = traits.autocapitalizationType
+		autocorrectionType = traits.autocorrectionType
+		spellCheckingType = traits.spellCheckingType
+	}
+	
+	private func updatePlaceholder(props: Props) {
 		if text.isEmpty {
 			placeholderLabel.isHidden = false
 		} else {
 			placeholderLabel.isHidden = true
 		}
 		
-		placeholderLabel.text = "Test"
+		placeholderLabel.render(
+			props: .init(
+				text: props.placeholder ?? "",
+				style: .init(
+					text: props.style.placeholder,
+					color: props.style.placeholderColor,
+					textAlignment: props.style.textAlignment,
+					numberOfLines: 1
+				)
+			)
+		)
 		placeholderLabel.sizeToFit()
 		placeholderLabel.frame = CGRect(x: 0, y: 0, width: bounds.width, height: placeholderLabel.bounds.height)
+	}
+	
+	private func layout() {
+		placeholderLabel.frame = CGRect(
+			x: 0,
+			y: 0,
+			width: bounds.width,
+			height: placeholderLabel.bounds.height
+		)
 	}
 }
 
 extension MultilineTextFieldView: UITextViewDelegate {
+	public func textView(
+		_ textView: UITextView,
+		shouldChangeTextIn range: NSRange,
+		replacementText text: String
+	) -> Bool {
+		if
+			case .focused(let focused)  = props.state,
+			let onReturn = focused.onReturn,
+			text.count == 1,
+			let scalar = text.unicodeScalars.first,
+			CharacterSet.newlines.contains(scalar)
+		{
+			onReturn.perform()
+			return false
+		}
+		
+		return true
+	}
+	
 	public func textViewDidBeginEditing(_ textView: UITextView) {
 		if case let .blured(blured) = props.state {
 			blured.onTap.perform()

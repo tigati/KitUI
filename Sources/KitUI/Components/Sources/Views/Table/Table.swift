@@ -80,7 +80,11 @@ public struct ChangeID: Equatable {
 	private(set) var id: Int
 	public var type: ChangeType {
 		didSet {
-			id += 1
+			if id > (Int.max - 1) {
+				id = 0
+			} else {
+				id += 1
+			}
 		}
 	}
 	

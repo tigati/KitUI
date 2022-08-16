@@ -20,7 +20,6 @@ public final class RegularViewController: ViewController & IComponent {
 	public override func viewDidLoad() {
 		props?.onViewDidLoad?.perform()
 		let backBarButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-		backBarButton.tintColor = .white
 		navigationItem.backBarButtonItem = backBarButton
 		super.viewDidLoad()
 	}

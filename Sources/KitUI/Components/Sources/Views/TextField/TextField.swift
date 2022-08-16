@@ -9,7 +9,7 @@ public struct TextField: IViewProps, Equatable {
 		text: nil,
 		placeholder: nil,
 		state: .blured(.init(onTap: .empty)),
-		traits: TextInputTraits(),
+		traits: .init(),
 		style: .initial
 	)
 	

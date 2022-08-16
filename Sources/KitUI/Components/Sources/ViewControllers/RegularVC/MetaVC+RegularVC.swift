@@ -18,4 +18,6 @@ extension MetaVC {
 			)
 		)
 	}
+	
+	public static let nilViewController = MetaVC.init(props: Optional<RegularVC>.none)
 }
