@@ -14,7 +14,8 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/ra1028/DifferenceKit.git", .upToNextMajor(from: "1.0.0")),
-        .package(url: "https://github.com/layoutBox/PinLayout", .upToNextMajor(from: "1.10.2"))
+        .package(url: "https://github.com/layoutBox/PinLayout", .upToNextMajor(from: "1.10.2")),
+				.package(url: "https://github.com/onevcat/Kingfisher.git", .upToNextMajor(from: "7.0.0"))
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
     ],
@@ -25,7 +26,8 @@ let package = Package(
             name: "KitUI",
             dependencies: [
                 "DifferenceKit",
-                "PinLayout"
+                "PinLayout",
+								"Kingfisher"
             ]
         ),
         .testTarget(

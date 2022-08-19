@@ -2,6 +2,7 @@ import Foundation
 
 extension MetaView {
 	public static func textView(
+		changeID: TextFieldChangeID,
 		text: String?,
 		placeholder: String?,
 		state: MultilineTextField.State,
@@ -10,6 +11,7 @@ extension MetaView {
 	) -> MetaView {
 		.init(
 			props: MultilineTextField(
+				changeID: changeID,
 				text: text,
 				placeholder: placeholder,
 				keyboardType: .default,

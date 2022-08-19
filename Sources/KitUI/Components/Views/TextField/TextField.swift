@@ -50,3 +50,21 @@ public struct TextField: IViewProps, Equatable {
 		}
 	}
 }
+
+public struct TextFieldChangeID: Equatable {
+	private(set) var id: Int
+	
+	public mutating func update() {
+		if id >= (Int.max - 100) {
+			id = 0
+		} else {
+			id += 1
+		}
+	}
+	
+	init() {
+		id = -1
+	}
+	
+	public static let initial = TextFieldChangeID()
+}

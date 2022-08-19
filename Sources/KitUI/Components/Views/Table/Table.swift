@@ -36,7 +36,7 @@ public struct Table: IViewProps, Equatable {
 
 	// MARK: - Internal properties
 
-	let changeID: ChangeID
+	let changeID: TableChangeID
 	let numberOfSections: Int
 	let numberOfRowsInSection: (Int) -> Int
 	let cellAtIndexPath: (IndexPath) -> MetaView?
@@ -48,7 +48,7 @@ public struct Table: IViewProps, Equatable {
 	let spacing: CGFloat
 	
 	public init(
-		changeID: ChangeID,
+		changeID: TableChangeID,
 		numberOfSections: Int,
 		numberOfRowsInSection: @escaping (Int) -> Int,
 		cellAtIndexPath: @escaping (IndexPath) -> MetaView?,
@@ -76,11 +76,11 @@ public struct Table: IViewProps, Equatable {
 	}
 }
 
-public struct ChangeID: Equatable {
+public struct TableChangeID: Equatable {
 	private(set) var id: Int
 	public var type: ChangeType {
 		didSet {
-			if id > (Int.max - 1) {
+			if id >= (Int.max - 100) {
 				id = 0
 			} else {
 				id += 1
@@ -88,7 +88,7 @@ public struct ChangeID: Equatable {
 		}
 	}
 	
-	public static let initial = ChangeID(id: -1, type: .reload)
+	public static let initial = TableChangeID(id: -1, type: .reload)
 	
 	public enum ChangeType {
 		case reload
@@ -96,7 +96,7 @@ public struct ChangeID: Equatable {
 		case updateVisible
 	}
 	
-	public static func == (lhs: ChangeID, rhs: ChangeID) -> Bool {
+	public static func == (lhs: TableChangeID, rhs: TableChangeID) -> Bool {
 		lhs.id == rhs.id
 	}
 }

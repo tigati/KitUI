@@ -125,7 +125,6 @@ extension MultilineTextFieldView: UITextViewDelegate {
 			onReturn.perform()
 			return false
 		}
-		
 		return true
 	}
 	

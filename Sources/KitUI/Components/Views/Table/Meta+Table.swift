@@ -3,7 +3,7 @@ import UIKit
 
 public extension MetaView {
 	static func table(
-		changeID: ChangeID,
+		changeID: TableChangeID,
 		numberOfSections: Int,
 		numberOfRowsInSection: @escaping (Int) -> Int,
 		cellAtIndexPath: @escaping (IndexPath) -> MetaView?,
@@ -11,8 +11,8 @@ public extension MetaView {
 		footerAtSection: ((Int) -> MetaView?)? = nil,
 		canMoveCell: ((IndexPath) -> Bool)? = nil,
 		proposedIndexPathOnMoveFromTo: ((IndexPath, IndexPath) -> IndexPath)? = nil,
-		onReorder: ViewCommandWith<(from: IndexPath, to: IndexPath)>?,
-		spacing: CGFloat
+		onReorder: ViewCommandWith<(from: IndexPath, to: IndexPath)>? = nil,
+		spacing: CGFloat = 0
 	) -> MetaView {
 		.init(
 			props: Table(

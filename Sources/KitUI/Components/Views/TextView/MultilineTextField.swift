@@ -8,6 +8,7 @@ public struct MultilineTextField: IViewProps, Equatable {
 	public static let type: String = String(reflecting: Self.self)
 	
 	public static let initial = MultilineTextField(
+		changeID: .initial,
 		text: nil,
 		placeholder: nil,
 		keyboardType: .default,
@@ -16,6 +17,7 @@ public struct MultilineTextField: IViewProps, Equatable {
 		style: .initial
 	)
 	
+	public let changeID: TextFieldChangeID
 	public let text: String?
 	public let placeholder: String?
 	public let state: State
@@ -23,6 +25,7 @@ public struct MultilineTextField: IViewProps, Equatable {
 	public let style: Style
 	
 	public init(
+		changeID: TextFieldChangeID,
 		text: String?,
 		placeholder: String?,
 		keyboardType: UIKeyboardType,
@@ -30,6 +33,7 @@ public struct MultilineTextField: IViewProps, Equatable {
 		traits: TextInputTraits,
 		style: MultilineTextField.Style
 	) {
+		self.changeID = changeID
 		self.text = text
 		self.placeholder = placeholder
 		self.state = state

@@ -85,8 +85,9 @@ public final class RegularViewController: ViewController & IComponent {
 		if let rightItems = navigationBar.rightItems {
 			let rightBarItems: [UIBarButtonItem] = rightItems.map { metaView in
 				let customView = metaView.makeView()
+				let barButton = UIBarButtonItem(customView: customView)
 				metaView.update(customView)
-				return UIBarButtonItem(customView: customView)
+				return barButton
 			}
 			navigationItem.rightBarButtonItems = rightBarItems
 		}
@@ -114,6 +115,7 @@ public final class RegularViewController: ViewController & IComponent {
 
 	private func presentModalVC(_ modalVC: ModalVC) {
 		let modalViewController = modalVC.viewController.makeView()
+		modalViewController.presentationController?.delegate = self
 		modalViewController.modalPresentationStyle = modalVC.modalPresentationStyle
 		modalVC.viewController.update(modalViewController)
 		if #available(iOS 13, *) {
@@ -128,8 +130,7 @@ public final class RegularViewController: ViewController & IComponent {
 		_ oldModalVC: ModalVC,
 		completion: (() -> Void)? = nil
 	) {
-		dismiss(animated: true) {
-			oldModalVC.onDismiss?.perform()
+		presentedViewController?.dismiss(animated: true) {
 			completion?()
 		}
 	}
@@ -153,5 +154,11 @@ public final class RegularViewController: ViewController & IComponent {
 extension RegularViewController: UINavigationBarDelegate {
 	public func navigationBar(_ navigationBar: UINavigationBar, shouldPush item: UINavigationItem) -> Bool {
 		false
+	}
+}
+
+extension RegularViewController: UIAdaptivePresentationControllerDelegate {
+	public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+		props?.modalVC?.onDismiss?.perform()
 	}
 }
