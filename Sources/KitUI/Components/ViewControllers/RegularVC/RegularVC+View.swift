@@ -115,8 +115,8 @@ public final class RegularViewController: ViewController & IComponent {
 
 	private func presentModalVC(_ modalVC: ModalVC) {
 		let modalViewController = modalVC.viewController.makeView()
-		modalViewController.presentationController?.delegate = self
 		modalViewController.modalPresentationStyle = modalVC.modalPresentationStyle
+		modalViewController.presentationController?.delegate = self
 		modalVC.viewController.update(modalViewController)
 		if #available(iOS 13, *) {
 			modalViewController.isModalInPresentation = true

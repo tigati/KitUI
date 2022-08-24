@@ -12,18 +12,30 @@ extension Label {
 		)
 
 		/// Стиль текста
-		let text: TextStyle
+		public let text: TextStyle
 
 		/// Цвет текста
-		let fill: FillStyle
+		public let fill: FillStyle
 
 		/// Выравнивание
-		let textAlignment: NSTextAlignment
+		public let textAlignment: NSTextAlignment
 
 		/// Количество строк
-		let numberOfLines: Int
+		public let numberOfLines: Int
 
 		// MARK: - Lifecycle
+		
+		public init(
+			text: TextStyle,
+			fill: FillStyle,
+			textAlignment: NSTextAlignment,
+			numberOfLines: Int
+		) {
+			self.text = text
+			self.fill = fill
+			self.textAlignment = textAlignment
+			self.numberOfLines = numberOfLines
+		}
 
 		public init(
 			text: TextStyle,

@@ -41,7 +41,8 @@ public final class MetaVC: Equatable {
 				let view = view as? TProps.View,
 				let props = props as? TProps
 			else { return }
-			view.render(props: props)
+			props.updateView(view)
+//			view.render(props: props)
 		}
 		self.equals = { lhs, rhs in
 			guard

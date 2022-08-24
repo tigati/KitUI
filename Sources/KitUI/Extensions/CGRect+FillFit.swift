@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-extension CGRect {
+public extension CGRect {
 	
 	func scaleToAspectFit(in target: CGRect) -> CGFloat {
 		// first try to match width

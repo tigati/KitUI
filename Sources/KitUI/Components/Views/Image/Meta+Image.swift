@@ -2,11 +2,13 @@ import Foundation
 
 extension MetaView {
 	public static func image(
+		id: String? = nil,
 		_ resource: ImageResource,
 		style: Image.Style = .initial
 	) -> MetaView {
 		.init(
 			props: Image(
+				id: id,
 				resource: resource,
 				style: style
 			)

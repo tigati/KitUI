@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-public class ViewController: UIViewController {
+open class ViewController: UIViewController {
 	
 	private var _viewID: String = ""
 	
@@ -18,7 +18,7 @@ public class ViewController: UIViewController {
 		setup()
 	}
 	
-	required init?(coder: NSCoder) {
+	required public init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 	

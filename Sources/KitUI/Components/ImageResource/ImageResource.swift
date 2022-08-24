@@ -3,6 +3,7 @@ import Foundation
 public enum ImageResource: Equatable {
 	case bundled(Bundled)
 	case url(URL)
+	case localURL(URL)
 	
 	public struct Bundled: Equatable {
 		public let name: String

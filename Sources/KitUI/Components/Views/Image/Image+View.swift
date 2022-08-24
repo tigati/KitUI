@@ -9,6 +9,7 @@ public final class ImageView: UIImageView, IComponent {
 	// MARK: - Public methods
 
 	public func render(props: Image) {
+		self.clipsToBounds = true
 		self.props = props
 		if let imageResource = props.resource {
 			switch imageResource {
@@ -16,6 +17,9 @@ public final class ImageView: UIImageView, IComponent {
 				image = UIImage(named: bundled.name, in: bundled.bundle, compatibleWith: nil)
 			case let .url(url):
 				break
+			case let .localURL(url):
+				guard let data = try? Data(contentsOf: url) else { return }
+				image = UIImage(data: data)
 			}
 		} else {
 			image = nil

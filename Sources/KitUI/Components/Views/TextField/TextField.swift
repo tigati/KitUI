@@ -29,12 +29,12 @@ public struct TextField: IViewProps, Equatable {
 	public struct Focused: Equatable {
 		let onUpdate: ViewCommandWith<String?>
 		let onFinishEditing: ViewCommand
-		let onSubmit: ViewCommand
+		let onSubmit: ViewCommand?
 		
 		public init(
 			onUpdate: ViewCommandWith<String?>,
 			onFinishEditing: ViewCommand,
-			onSubmit: ViewCommand
+			onSubmit: ViewCommand?
 		) {
 			self.onUpdate = onUpdate
 			self.onFinishEditing = onFinishEditing

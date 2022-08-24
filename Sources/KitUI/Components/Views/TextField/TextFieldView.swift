@@ -72,6 +72,7 @@ public final class TextFieldView: UITextField, IComponent {
 			)
 		}
 		
+		textAlignment = props.style.textAlignment
 		tintColor = props.style.cursorColor
 		font = props.style.text.font
 		textColor = props.style.textColor
@@ -122,7 +123,7 @@ extension TextFieldView: UITextFieldDelegate {
 	
 	public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
 		if case let .focused(focused) = props.state {
-			focused.onSubmit.perform()
+			focused.onSubmit?.perform()
 		}
 		return true
 	}

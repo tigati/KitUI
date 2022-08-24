@@ -49,6 +49,7 @@ public final class TableView: UITableView, IComponent {
 	// MARK: - Private methods
 	
 	private func setup() {
+		isEditing = true
 		keyboardDismissMode = .interactive
 		rowHeight = UITableView.automaticDimension
 		estimatedRowHeight = UITableView.automaticDimension
@@ -67,8 +68,6 @@ public final class TableView: UITableView, IComponent {
 		
 		delegate = self
 		dataSource = self
-		dragDelegate = self
-		dragInteractionEnabled = true
 	}
 	
 	private func updateCells(at indexPaths: [IndexPath]) {

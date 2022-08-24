@@ -6,6 +6,14 @@ public final class RootView: UIView {
 	
 	private var contentView: UIView?
 	
+	public override func hitTest(
+		_ point: CGPoint,
+		with event: UIEvent?
+	) -> UIView? {
+		let view = super.hitTest(point, with: event)
+		return view == self ? nil : view
+	}
+	
 	public func render(metaView: MetaView) {
 		defer { self.contentViewType = metaView.type }
 		
