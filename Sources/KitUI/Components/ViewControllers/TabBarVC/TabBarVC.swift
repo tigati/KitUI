@@ -10,6 +10,7 @@ public struct TabBarVC: IViewProps, Equatable {
 	public static let initial = Self(
 		tabs: [],
 		selectedTabIndex: 0,
+		modalVC: nil,
 		style: .initial
 	)
 
@@ -20,6 +21,8 @@ public struct TabBarVC: IViewProps, Equatable {
 
 	/// Выбранный таб
 	public let selectedTabIndex: Int
+	
+	public let modalVC: ModalVC?
 
 	public var style: Style = .initial
 
@@ -28,10 +31,12 @@ public struct TabBarVC: IViewProps, Equatable {
 	public init(
 		tabs: [Tab],
 		selectedTabIndex: Int,
+		modalVC: ModalVC?,
 		style: Style
 	) {
 		self.tabs = tabs
 		self.selectedTabIndex = selectedTabIndex
+		self.modalVC = modalVC
 		self.style = style
 	}
 }

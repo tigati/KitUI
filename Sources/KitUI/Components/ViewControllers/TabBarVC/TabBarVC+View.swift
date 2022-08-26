@@ -73,6 +73,8 @@ public final class TabBarViewController: UITabBarController, IComponent {
 			viewController.tabBarItem.title = tab.title
 			viewController.tabBarItem.image = UIImage(named: tab.icon.name, in: tab.icon.bundle, compatibleWith: nil)
 		}
+		
+		render(oldProps: self.props.modalVC, props: props.modalVC)
 
 		self.props = props
 	}
@@ -89,5 +91,13 @@ extension TabBarViewController: UITabBarControllerDelegate {
 		guard let index = viewControllers?.firstIndex(of: viewController)
 		else { return }
 		props.tabs[index].onTap.perform()
+	}
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+
+extension TabBarViewController: UIAdaptivePresentationControllerDelegate {
+	public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+		props.modalVC?.onDismiss?.perform()
 	}
 }
