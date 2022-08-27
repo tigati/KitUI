@@ -45,7 +45,6 @@ public final class TableHeaderFooterView<TContentView: UIView>: UITableViewHeade
 
 	private func layout() {
 		tintColor = .clear
-		backgroundColor = .clear
 		backgroundView?.backgroundColor = .clear
 		contentView.backgroundColor = .clear
 		customContentView.pin.all(margins).sizeToFit(.width)
