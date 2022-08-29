@@ -53,14 +53,18 @@ public final class NavigationViewController: UINavigationController, IComponent 
 		
 		var newViewControllers: [UIViewController?] = viewControllers
 		
+		var shouldSetNetViewControllers: Bool = false
+		
 		for changeset in stagedChangeset {
 			for delete in changeset.elementDeleted {
+				shouldSetNetViewControllers = true
 				newViewControllers[delete.element] = nil
 			}
 			
 			newViewControllers = newViewControllers.filter { $0 != nil }
 			
 			for insert in changeset.elementInserted {
+				shouldSetNetViewControllers = true
 				let newVC = newStack[insert.element]
 				let newViewController = newVC.makeView()
 				newVC.update(newViewController)
@@ -74,13 +78,16 @@ public final class NavigationViewController: UINavigationController, IComponent 
 			}
 			
 			for (source, target) in changeset.elementMoved {
+				shouldSetNetViewControllers = true
 				newViewControllers.swapAt(source.element, target.element)
 			}
 		}
 		
 		let nonNilViewControllers = newViewControllers.compactMap { $0 }
 		
-		setViewControllers(nonNilViewControllers, animated: true)
+		if shouldSetNetViewControllers {
+			setViewControllers(nonNilViewControllers, animated: true)
+		}
 		
 		setProgress(props.progress)
 	}

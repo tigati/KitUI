@@ -8,18 +8,32 @@ public struct Dispatch<T> {
 		self.closure = closure
 	}
 	
-	public func callAsFunction(_ argument: T) -> ViewCommand {
-		ViewCommand {
-			closure(argument)
-		}
+	public func callAsFunction(
+		fileID: String = #fileID,
+		line: Int = #line,
+		column: Int = #column,
+		_ argument: T
+	) -> ViewCommand {
+		return .init(
+			action: { closure(argument) },
+			fileID: fileID,
+			line: line,
+			column: column
+		)
 	}
 	
 	public func callAsFunction<TValue>(
+		fileID: String = #fileID,
+		line: Int = #line,
+		column: Int = #column,
 		_ map: @escaping (TValue) -> T
 	) -> ViewCommandWith<TValue> {
-		ViewCommandWith<TValue> { input in
-			closure(map(input))
-		}
+		return .init(
+			action: { input in closure(map(input)) },
+			fileID: fileID,
+			line: line,
+			column: column
+		)
 	}
 	
 	public func perform(_ value: T) {
