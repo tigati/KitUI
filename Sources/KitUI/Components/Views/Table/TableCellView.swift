@@ -33,7 +33,7 @@ public final class TableCellView<TContentView: UIView>: UITableViewCell, ITableC
 	}
 
 	public override func sizeThatFits(_ size: CGSize) -> CGSize {
-		let innerSize = size.inset(by: margins)
+		let innerSize = CGSize(width: contentView.bounds.size.width, height: 0).inset(by: margins)
 		return customContentView.sizeThatFits(innerSize).offset(by: margins)
 	}
 

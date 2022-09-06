@@ -12,7 +12,8 @@ public extension MetaView {
 		canMoveCell: ((IndexPath) -> Bool)? = nil,
 		proposedIndexPathOnMoveFromTo: ((IndexPath, IndexPath) -> IndexPath)? = nil,
 		onReorder: ViewCommandWith<(from: IndexPath, to: IndexPath)>? = nil,
-		spacing: CGFloat = 0
+		spacing: CGFloat = 0,
+		separator: UITableViewCell.SeparatorStyle = .none
 	) -> MetaView {
 		.init(
 			props: Table(
@@ -25,7 +26,8 @@ public extension MetaView {
 				canMoveCell: canMoveCell,
 				proposedIndexPathOnMoveFromTo: proposedIndexPathOnMoveFromTo,
 				onReorder: onReorder,
-				spacing: spacing
+				spacing: spacing,
+				separator: separator
 			)
 		)
 	}

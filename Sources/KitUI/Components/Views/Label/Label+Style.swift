@@ -15,13 +15,13 @@ extension Label {
 		public let text: TextStyle
 
 		/// Цвет текста
-		public let fill: FillStyle
+		public fileprivate(set) var fill: FillStyle
 
 		/// Выравнивание
-		public let textAlignment: NSTextAlignment
+		public fileprivate(set) var textAlignment: NSTextAlignment
 
 		/// Количество строк
-		public let numberOfLines: Int
+		public fileprivate(set) var numberOfLines: Int
 
 		// MARK: - Lifecycle
 		
@@ -60,5 +60,25 @@ extension Label {
 			self.textAlignment = textAlignment
 			self.numberOfLines = numberOfLines
 		}
+	}
+}
+
+extension Label.Style {
+	public func numberOfLines(_ value: Int) -> Self {
+		var new = self
+		new.numberOfLines = value
+		return new
+	}
+	
+	public func textAlignment(_ value: NSTextAlignment) -> Self {
+		var new = self
+		new.textAlignment = value
+		return new
+	}
+	
+	public func color(_ value: UIColor) -> Self {
+		var new = self
+		new.fill = .solid(value)
+		return new
 	}
 }

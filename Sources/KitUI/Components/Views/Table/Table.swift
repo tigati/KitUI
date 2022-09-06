@@ -31,7 +31,8 @@ public struct Table: IViewProps, Equatable {
 		canMoveCell: nil,
 		proposedIndexPathOnMoveFromTo: nil,
 		onReorder: nil,
-		spacing: 0
+		spacing: 0,
+		separator: .none
 	)
 
 	// MARK: - Internal properties
@@ -46,6 +47,7 @@ public struct Table: IViewProps, Equatable {
 	let proposedIndexPathOnMoveFromTo: ((_ from: IndexPath, _ to: IndexPath) -> IndexPath)?
 	let onReorder: ViewCommandWith<(from: IndexPath, to: IndexPath)>?
 	let spacing: CGFloat
+	let separator: UITableViewCell.SeparatorStyle
 	
 	public init(
 		changeID: TableChangeID,
@@ -57,7 +59,8 @@ public struct Table: IViewProps, Equatable {
 		canMoveCell: ((IndexPath) -> Bool)?,
 		proposedIndexPathOnMoveFromTo: ((_ from: IndexPath, _ to: IndexPath) -> IndexPath)?,
 		onReorder: ViewCommandWith<(from: IndexPath, to: IndexPath)>?,
-		spacing: CGFloat
+		spacing: CGFloat,
+		separator: UITableViewCell.SeparatorStyle
 	) {
 		self.changeID = changeID
 		self.numberOfSections = numberOfSections
@@ -69,6 +72,7 @@ public struct Table: IViewProps, Equatable {
 		self.proposedIndexPathOnMoveFromTo = proposedIndexPathOnMoveFromTo
 		self.onReorder = onReorder
 		self.spacing = spacing
+		self.separator = separator
 	}
 	
 	public static func == (lhs: Table, rhs: Table) -> Bool {

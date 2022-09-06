@@ -16,6 +16,12 @@ public struct Alert: IViewProps, Equatable {
 		public let title: String
 		public let style: UIAlertAction.Style
 		public let onTap: ViewCommand
+		
+		public init(title: String, style: UIAlertAction.Style, onTap: ViewCommand) {
+			self.title = title
+			self.style = style
+			self.onTap = onTap
+		}
 	}
 	
 	public init(

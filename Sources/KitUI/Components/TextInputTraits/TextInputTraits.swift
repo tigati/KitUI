@@ -31,3 +31,11 @@ public struct TextInputTraits: Equatable {
 		self.spellCheckingType = spellCheckingType
 	}
 }
+
+extension TextInputTraits {
+	public func withReturnKeyType(_ returnKeyType: UIReturnKeyType) -> TextInputTraits {
+		var new = self
+		new.returnKeyType = returnKeyType
+		return new
+	}
+}

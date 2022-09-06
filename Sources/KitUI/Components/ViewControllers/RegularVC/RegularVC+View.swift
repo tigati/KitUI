@@ -109,4 +109,8 @@ extension RegularViewController: UIAdaptivePresentationControllerDelegate {
 	public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
 		props?.modalVC?.onDismiss?.perform()
 	}
+	
+	public func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
+		props?.modalVC?.onAttemptToDismiss?.perform()
+	}
 }

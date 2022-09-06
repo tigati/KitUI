@@ -21,6 +21,8 @@ public struct ModalVC: Equatable {
 
 	/// Команда при закрытии окна
 	public let onDismiss: ViewCommand?
+	
+	public let onAttemptToDismiss: ViewCommand?
 
 	// MARK: - Lifecycle
 
@@ -28,11 +30,13 @@ public struct ModalVC: Equatable {
 		viewController: MetaVC,
 		modalPresentationStyle: UIModalPresentationStyle,
 		onPresent: ViewCommand? = nil,
-		onDismiss: ViewCommand? = nil
+		onDismiss: ViewCommand? = nil,
+		onAttemptToDismiss: ViewCommand? = nil
 	) {
 		self.viewController = viewController
 		self.modalPresentationStyle = modalPresentationStyle
 		self.onPresent = onPresent
 		self.onDismiss = onDismiss
+		self.onAttemptToDismiss = onAttemptToDismiss
 	}
 }

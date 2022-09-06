@@ -12,6 +12,8 @@ public final class MetaView: Equatable, Identifiable {
 	
 	public let tableCellViewType: UITableViewCell.Type
 	public let headerFooterViewType: UITableViewHeaderFooterView.Type
+	
+	public let collectionCellViewType: UICollectionViewCell.Type
 
 	public private(set) var id: String?
 
@@ -51,6 +53,7 @@ public final class MetaView: Equatable, Identifiable {
 		self.viewType = TProps.View.self
 		self.tableCellViewType = TableCellView<TProps.View>.self
 		self.headerFooterViewType = TableHeaderFooterView<TProps.View>.self
+		self.collectionCellViewType = CollectionCellView<TProps.View>.self
 		self.id = id ?? TProps.type
 		self.props = props
 

@@ -21,7 +21,11 @@ extension UIAdaptivePresentationControllerDelegate where Self: UIViewController 
 		modalViewController.presentationController?.delegate = self
 		modalVC.viewController.update(modalViewController)
 		if #available(iOS 13, *) {
-			modalViewController.isModalInPresentation = true
+			if modalVC.onAttemptToDismiss != nil {
+				modalViewController.isModalInPresentation = true
+			} else {
+				modalViewController.isModalInPresentation = false
+			}			
 		}
 		present(modalViewController, animated: true) {
 			modalVC.onPresent?.perform()
@@ -48,6 +52,15 @@ extension UIAdaptivePresentationControllerDelegate where Self: UIViewController 
 			guard let modalViewController = presentedViewController else {
 				return
 			}
+			
+			if #available(iOS 13, *) {
+				if modalVC.onAttemptToDismiss != nil {
+					modalViewController.isModalInPresentation = true
+				} else {
+					modalViewController.isModalInPresentation = false
+				}
+			}
+			
 			modalVC.viewController.update(modalViewController)
 		}
 	}

@@ -14,7 +14,7 @@ public final class TableView: UITableView, IComponent {
 	// MARK: - Lifecycle
 	
 	init() {
-		super.init(frame: .zero, style: .plain)
+		super.init(frame: .zero, style: .grouped)
 		setup()
 	}
 	
@@ -29,6 +29,8 @@ public final class TableView: UITableView, IComponent {
 	// MARK: - Public methods
 	
 	public func render(props: Table) {
+		self.separatorStyle = props.separator
+		
 		guard self.props.changeID != props.changeID else {
 			self.props = props
 			return
@@ -42,7 +44,13 @@ public final class TableView: UITableView, IComponent {
 		case .update(let indexPaths):
 			updateCells(at: indexPaths)
 		case .updateVisible:
+			let visCells = visibleCells
+			let count = visCells.count
+			let some = count + 1
 			updateCells(at: indexPathsForVisibleRows ?? [])
+			let visibleSections = indexesOfVisibleSections
+			updateSectionHeader(at: visibleSections)
+			updateSectionFooter(at: visibleSections)
 		}
 	}
 	
@@ -61,13 +69,47 @@ public final class TableView: UITableView, IComponent {
 		
 		allowsSelection = false
 		allowsSelectionDuringEditing = false
-		separatorStyle = .none
 		
 		backgroundView = nil
 		backgroundColor = .clear
 		
+		keyboardDismissMode = .interactive
+		
 		delegate = self
 		dataSource = self
+		
+		let notificationCenter = NotificationCenter.default
+		
+		notificationCenter.addObserver(
+			self,
+			selector: #selector(adjustForKeyboard),
+			name: UIResponder.keyboardWillHideNotification,
+			object: nil
+		)
+		notificationCenter.addObserver(
+			self,
+			selector: #selector(adjustForKeyboard),
+			name: UIResponder.keyboardWillChangeFrameNotification,
+			object: nil
+		)
+	}
+	
+	@objc
+	func adjustForKeyboard(notification: Notification) {
+		guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+		
+		let keyboardScreenEndFrame = keyboardValue.cgRectValue
+		let keyboardViewEndFrame = convert(keyboardScreenEndFrame, from: window)
+		let keyboardHeight: CGFloat
+		if notification.name == UIResponder.keyboardWillHideNotification {
+			keyboardHeight = 0
+		} else {
+			keyboardHeight = keyboardViewEndFrame.height
+		}
+		
+		guard let keyboardAnimationDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else { return }
+		
+		contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight, right: 0)
 	}
 	
 	private func updateCells(at indexPaths: [IndexPath]) {
@@ -78,6 +120,32 @@ public final class TableView: UITableView, IComponent {
 				let item = props.cellAtIndexPath(indexPath)
 			{
 				item.update(cell.customContentView)
+			}
+		}
+		endUpdates()
+	}
+	
+	private func updateSectionHeader(at indexes: [Int]) {
+		beginUpdates()
+		indexes.forEach { index in
+			if
+				let section = headerView(forSection: index) as? ITableHeaderFooterView,
+				let item = props.headerAtSection?(index)
+			{
+				item.update(section.customContentView)
+			}
+		}
+		endUpdates()
+	}
+	
+	private func updateSectionFooter(at indexes: [Int]) {
+		beginUpdates()
+		indexes.forEach { index in
+			if
+				let section = footerView(forSection: index) as? ITableHeaderFooterView,
+				let item = props.footerAtSection?(index)
+			{
+				item.update(section.customContentView)
 			}
 		}
 		endUpdates()

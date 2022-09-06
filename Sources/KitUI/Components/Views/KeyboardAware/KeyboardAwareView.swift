@@ -9,6 +9,8 @@ public final class KeyboardAwareView: ComponentView, IComponent {
 	
 	private var keyboardHeight: CGFloat = 0
 	
+	private var adjustKeyboardTask: DispatchWorkItem?
+	
 	public override func sizeThatFits(_ size: CGSize) -> CGSize {
 		size
 	}
