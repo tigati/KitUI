@@ -6,21 +6,13 @@ public final class PageControlView: ComponentView, IComponent {
 	
 	enum Constants {
 		static let pageLength: Double = 6
-		static let currentPageLength: Double = 20
+		static let currentPageLength: Double = 12
 		static let space: Double = 4
-		
-		static let activeStartColor = UIColor(red: 0.945, green: 0.353, blue: 0.141, alpha: 1).cgColor
-		static let activeEndColor = UIColor(red: 0.831, green: 0.078, blue: 0.353, alpha: 1).cgColor
-		static let inactiveColor = UIColor(red: 0.294, green: 0.294, blue: 0.412, alpha: 1).cgColor
 	}
 	
 	private var props: PageControl = .initial
 	
-	private var pageLayers: [CAGradientLayer] = []
-	
-	public override func setup() {
-		
-	}
+	private var pageLayers: [CALayer] = []
 	
 	public func render(props: PageControl) {
 		defer { self.props = props }
@@ -70,22 +62,11 @@ public final class PageControlView: ComponentView, IComponent {
 
 			layer.frame = CGRect(x: x, y: 0, width: width, height: Constants.pageLength)
 			
-			layer.colors = [
-				color(
-					startColor: Constants.inactiveColor,
-					endColor: Constants.activeStartColor,
-					progress: progress
-				),
-				color(
-					startColor: Constants.inactiveColor,
-					endColor: Constants.activeEndColor,
-					progress: progress
-				)
-			]
-			
-			layer.startPoint = CGPoint(x: 0, y: 0)
-			layer.endPoint = CGPoint(x: 1, y: 1)
-			layer.locations = [0, 1]
+			layer.backgroundColor = color(
+				startColor: props.inactiveColor.cgColor,
+				endColor: props.activeColor.cgColor,
+				progress: progress
+			)
 
 			CATransaction.commit()
 			

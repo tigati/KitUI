@@ -5,14 +5,16 @@ extension MetaView {
 		numberOfPages: Int,
 		pageAtIndex: @escaping (Int) -> MetaView,
 		currentPage: Int,
-		onPageBecameCurrent: ViewCommandWith<Int>
+		onPageBecameCurrent: ViewCommandWith<Int>,
+		onPageScroll: ViewCommandWith<Double>
 	) -> MetaView {
 		.init(
 			props: Pager(
 				numberOfPages: numberOfPages,
 				pageAtIndex: pageAtIndex,
 				currentPage: currentPage,
-				onPageBecameCurrent: onPageBecameCurrent
+				onPageBecameCurrent: onPageBecameCurrent,
+				onPageScroll: onPageScroll
 			)
 		)
 	}

@@ -18,7 +18,7 @@ public struct Table: IViewProps, Equatable {
 	public static let type: String = String(reflecting: Self.self)
 	
 	public static let initial = Table(
-		changeID: .initial,
+		changeID: .initial(),
 		numberOfSections: 0,
 		numberOfRowsInSection: { _ in
 			return 0
@@ -32,7 +32,8 @@ public struct Table: IViewProps, Equatable {
 		proposedIndexPathOnMoveFromTo: nil,
 		onReorder: nil,
 		spacing: 0,
-		separator: .none
+		separator: .none,
+		bounces: true
 	)
 
 	// MARK: - Internal properties
@@ -48,6 +49,7 @@ public struct Table: IViewProps, Equatable {
 	let onReorder: ViewCommandWith<(from: IndexPath, to: IndexPath)>?
 	let spacing: CGFloat
 	let separator: UITableViewCell.SeparatorStyle
+	let bounces: Bool
 	
 	public init(
 		changeID: TableChangeID,
@@ -60,7 +62,8 @@ public struct Table: IViewProps, Equatable {
 		proposedIndexPathOnMoveFromTo: ((_ from: IndexPath, _ to: IndexPath) -> IndexPath)?,
 		onReorder: ViewCommandWith<(from: IndexPath, to: IndexPath)>?,
 		spacing: CGFloat,
-		separator: UITableViewCell.SeparatorStyle
+		separator: UITableViewCell.SeparatorStyle,
+		bounces: Bool
 	) {
 		self.changeID = changeID
 		self.numberOfSections = numberOfSections
@@ -73,6 +76,7 @@ public struct Table: IViewProps, Equatable {
 		self.onReorder = onReorder
 		self.spacing = spacing
 		self.separator = separator
+		self.bounces = bounces
 	}
 	
 	public static func == (lhs: Table, rhs: Table) -> Bool {
@@ -81,18 +85,16 @@ public struct Table: IViewProps, Equatable {
 }
 
 public struct TableChangeID: Equatable {
-	private(set) var id: Int
+	private(set) var id: UUID
 	public var type: ChangeType {
 		didSet {
-			if id >= (Int.max - 100) {
-				id = 0
-			} else {
-				id += 1
-			}
+			id = UUID()
 		}
 	}
 	
-	public static let initial = TableChangeID(id: -1, type: .reload)
+	public static func initial() -> TableChangeID {
+		return TableChangeID(id: UUID(), type: .reload)
+	}
 	
 	public enum ChangeType {
 		case reload
@@ -102,39 +104,5 @@ public struct TableChangeID: Equatable {
 	
 	public static func == (lhs: TableChangeID, rhs: TableChangeID) -> Bool {
 		lhs.id == rhs.id
-	}
-}
-
-/// Секция с ячейками
-/// Используется в декларативном синтаксисе
-public struct TableSection {
-	let header: MetaView?
-	let cells: [MetaView]
-	let footer: MetaView?
-
-	/// Создание секции с `variardic` ячейками
-	public static func section(
-		header: MetaView? = nil,
-		_ cells: MetaView...,
-		footer: MetaView? = nil
-	) -> TableSection {
-		.init(
-			header: header,
-			cells: cells,
-			footer: footer
-		)
-	}
-
-	/// Создание секции с массивом ячеек
-	public static func section(
-		header: MetaView? = nil,
-		_ cells: [MetaView],
-		footer: MetaView? = nil
-	) -> TableSection {
-		.init(
-			header: header,
-			cells: cells,
-			footer: footer
-		)
 	}
 }

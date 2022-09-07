@@ -2,11 +2,11 @@ import Foundation
 import UIKit
 
 /// Вью для компонента Table
-public final class TableView: UITableView, IComponent {
+public final class StaticTableView: UITableView, IComponent {
 	
 	// MARK: - Private properties
 	
-	private var props: Table = .initial
+	private var props: StaticTable = .initial
 	
 	private var cellIdentifiers: [ObjectIdentifier: String] = [:]
 	private var headerFooterIdentifiers: [ObjectIdentifier: String] = [:]
@@ -30,28 +30,8 @@ public final class TableView: UITableView, IComponent {
 	
 	public func render(props: Table) {
 		self.separatorStyle = props.separator
-		self.bounces = props.bounces
-		guard self.props.changeID != props.changeID else {
-			self.props = props
-			return
-		}
 		
-		self.props = props
 		
-		switch props.changeID.type {
-		case .reload:
-			reloadData()
-		case .update(let indexPaths):
-			updateCells(at: indexPaths)
-		case .updateVisible:
-			let visCells = visibleCells
-			let count = visCells.count
-			let some = count + 1
-			updateCells(at: indexPathsForVisibleRows ?? [])
-			let visibleSections = indexesOfVisibleSections
-			updateSectionHeader(at: visibleSections)
-			updateSectionFooter(at: visibleSections)
-		}
 	}
 	
 	// MARK: - Private methods
@@ -73,7 +53,7 @@ public final class TableView: UITableView, IComponent {
 		backgroundView = nil
 		backgroundColor = .clear
 		
-		keyboardDismissMode = .onDrag
+		keyboardDismissMode = .interactive
 		
 		delegate = self
 		dataSource = self
@@ -111,50 +91,50 @@ public final class TableView: UITableView, IComponent {
 		
 		contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight, right: 0)
 	}
-	
-	private func updateCells(at indexPaths: [IndexPath]) {
-		beginUpdates()
-		indexPaths.forEach { indexPath in
-			if
-				let cell = cellForRow(at: indexPath) as? ITableCellView,
-				let item = props.cellAtIndexPath(indexPath)
-			{
-				item.update(cell.customContentView)
-			}
-		}
-		endUpdates()
-	}
-	
-	private func updateSectionHeader(at indexes: [Int]) {
-		beginUpdates()
-		indexes.forEach { index in
-			if
-				let section = headerView(forSection: index) as? ITableHeaderFooterView,
-				let item = props.headerAtSection?(index)
-			{
-				item.update(section.customContentView)
-			}
-		}
-		endUpdates()
-	}
-	
-	private func updateSectionFooter(at indexes: [Int]) {
-		beginUpdates()
-		indexes.forEach { index in
-			if
-				let section = footerView(forSection: index) as? ITableHeaderFooterView,
-				let item = props.footerAtSection?(index)
-			{
-				item.update(section.customContentView)
-			}
-		}
-		endUpdates()
-	}
+//
+//	private func updateCells(at indexPaths: [IndexPath]) {
+//		beginUpdates()
+//		indexPaths.forEach { indexPath in
+//			if
+//				let cell = cellForRow(at: indexPath) as? ITableCellView,
+//				let item = props.cellAtIndexPath(indexPath)
+//			{
+//				item.update(cell.customContentView)
+//			}
+//		}
+//		endUpdates()
+//	}
+//
+//	private func updateSectionHeader(at indexes: [Int]) {
+//		beginUpdates()
+//		indexes.forEach { index in
+//			if
+//				let section = headerView(forSection: index) as? ITableHeaderFooterView,
+//				let item = props.headerAtSection?(index)
+//			{
+//				item.update(section.customContentView)
+//			}
+//		}
+//		endUpdates()
+//	}
+//
+//	private func updateSectionFooter(at indexes: [Int]) {
+//		beginUpdates()
+//		indexes.forEach { index in
+//			if
+//				let section = footerView(forSection: index) as? ITableHeaderFooterView,
+//				let item = props.footerAtSection?(index)
+//			{
+//				item.update(section.customContentView)
+//			}
+//		}
+//		endUpdates()
+//	}
 }
 
 // MARK: - UITableViewDelegate
 
-extension TableView: UITableViewDelegate {
+extension StaticTableView: UITableViewDelegate {
 	public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
 		return .none
 	}
@@ -166,19 +146,17 @@ extension TableView: UITableViewDelegate {
 
 // MARK: - UITableViewDataSource
 
-extension TableView: UITableViewDataSource {
+extension StaticTableView: UITableViewDataSource {
 	public func numberOfSections(in tableView: UITableView) -> Int {
-		props.numberOfSections
+		props.sections.count
 	}
 	
 	public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		props.numberOfRowsInSection(section) ?? 0
+		props.sections[section].cells.count
 	}
 	
 	public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard
-			let item = props.cellAtIndexPath(indexPath)
-		else { fatalError("No cell found") }
+		let item = props.sections[indexPath.section].cells[indexPath.row]
 		
 		let cellType = item.tableCellViewType
 		
@@ -204,36 +182,36 @@ extension TableView: UITableViewDataSource {
 		
 		return cell
 	}
-	
-	public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-		guard
-			let item = props.headerAtSection?(section)
-		else { return nil }
-		
-		return headerFooterView(with: item)
-	}
-	
-	public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		if props.headerAtSection?(section) != nil {
-			return UITableView.automaticDimension
-		}
-		return .zero
-	}
-	
-	public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-		guard
-			let item = props.footerAtSection?(section)
-		else { return nil }
-		
-		return headerFooterView(with: item)
-	}
-	
-	public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-		if props.footerAtSection?(section) != nil {
-			return UITableView.automaticDimension
-		}
-		return .zero
-	}
+//	
+//	public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//		guard
+//			let item = props.headerAtSection?(section)
+//		else { return nil }
+//		
+//		return headerFooterView(with: item)
+//	}
+//	
+//	public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//		if props.headerAtSection?(section) != nil {
+//			return UITableView.automaticDimension
+//		}
+//		return .zero
+//	}
+//	
+//	public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+//		guard
+//			let item = props.footerAtSection?(section)
+//		else { return nil }
+//		
+//		return headerFooterView(with: item)
+//	}
+//	
+//	public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+//		if props.footerAtSection?(section) != nil {
+//			return UITableView.automaticDimension
+//		}
+//		return .zero
+//	}
 	
 	// MARK: - Private methods
 	
@@ -295,11 +273,11 @@ extension TableView: UITableViewDataSource {
 	}
 }
 
-extension TableView: UITableViewDragDelegate {
+extension StaticTableView: UITableViewDragDelegate {
 	public func tableView(_ table: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
 		guard tableView(table, canMoveRowAt: indexPath) == true else { return [] }
 		let dragItem = UIDragItem(itemProvider: NSItemProvider())
-		dragItem.localObject = props.cellAtIndexPath(indexPath)
+		dragItem.localObject = props.sections[indexPath.section].cells[indexPath.row]
 		return [ dragItem ]
 	}
 }

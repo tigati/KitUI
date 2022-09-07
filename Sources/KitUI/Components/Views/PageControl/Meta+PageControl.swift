@@ -1,28 +1,37 @@
 import Foundation
+import UIKit
 
 public extension MetaView {
 	static func pageControl(
 		numberOfPages: Int,
-		progress: Double
+		progress: Double,
+		activeColor: UIColor,
+		inactiveColor: UIColor
 	) -> MetaView {
 		.init(
 			props: PageControl(
 				numberOfPages: numberOfPages,
 				currentPage: progress,
-				isMomentary: true
+				isMomentary: true,
+				activeColor: activeColor,
+				inactiveColor: inactiveColor
 			)
 		)
 	}
 	
 	static func pageControl(
 		numberOfPages: Int,
-		currentPage: Int
+		currentPage: Int,
+		activeColor: UIColor,
+		inactiveColor: UIColor
 	) -> MetaView {
 		.init(
 			props: PageControl(
 				numberOfPages: numberOfPages,
 				currentPage: Double(currentPage),
-				isMomentary: false
+				isMomentary: false,
+				activeColor: activeColor,
+				inactiveColor: inactiveColor
 			)
 		)
 	}

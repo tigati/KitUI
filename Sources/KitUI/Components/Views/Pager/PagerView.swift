@@ -18,21 +18,29 @@ public final class PagerView: ComponentView, IComponent {
 		collectionView.isPagingEnabled = true
 		collectionView.delegate = self
 		collectionView.dataSource = self
-		collectionView.translatesAutoresizingMaskIntoConstraints =  false
 		return collectionView
 	}()
 	
 	public override func setup() {
+		collectionView.backgroundView = nil
+		collectionView.backgroundColor = .clear
 		collectionView.contentInsetAdjustmentBehavior = .never
 		addSubview(collectionView)
 	}
 	
+	public var didInitialMove: Bool = false
+	
 	public override func layout() {
 		collectionView.pin.all()
-		moveToPage(at: props.currentPage)
+		
+		if didInitialMove == false {
+			moveToPage(at: props.currentPage)
+			didInitialMove = true
+		}
 	}
 	
 	public func render(props: Pager) {
+		let oldProps = self.props
 		if props.numberOfPages != self.props.numberOfPages {
 			self.props = props
 			collectionView.reloadData()
@@ -41,7 +49,9 @@ public final class PagerView: ComponentView, IComponent {
 			updateVisibleCells()
 		}
 		
-		moveToPage(at: props.currentPage)
+		if oldProps.currentPage != props.currentPage {
+			moveToPage(at: props.currentPage)
+		}
 		setNeedsLayout()
 	}
 	
@@ -76,6 +86,11 @@ public final class PagerView: ComponentView, IComponent {
 }
 
 extension PagerView: UICollectionViewDelegateFlowLayout {
+	public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+		let page = (scrollView.contentOffset.x / scrollView.bounds.size.width)
+		props.onPageScroll.perform(with: page)
+	}
+	
 	public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
 		let page = Int(self.collectionView.contentOffset.x / self.collectionView.frame.size.width)
 		
@@ -89,7 +104,7 @@ extension PagerView: UICollectionViewDelegateFlowLayout {
 	) -> CGSize {
 		return CGSize(
 			width: collectionView.frame.width,
-			height: collectionView.frame.height - collectionView.contentInset.top - collectionView.contentInset.bottom
+			height: collectionView.frame.height - collectionView.adjustedContentInset.top - collectionView.adjustedContentInset.bottom
 		)
 	}
 	
@@ -137,6 +152,4 @@ extension PagerView: UICollectionViewDataSource {
 		
 		return cell
 	}
-	
-	
 }

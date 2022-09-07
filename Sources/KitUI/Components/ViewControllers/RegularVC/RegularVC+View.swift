@@ -11,6 +11,8 @@ public final class RegularViewController: ViewController & IComponent {
 	
 	public lazy var contentView = RootView()
 	
+	public var titleViewID: String?
+	
 	// MARK: - Override
 	
 	public override func loadView() {
@@ -92,10 +94,15 @@ public final class RegularViewController: ViewController & IComponent {
 			navigationItem.rightBarButtonItems = rightBarItems
 		}
 		
-		let titleView = navigationBar.title.makeView()
-		navigationBar.title.update(titleView)
+		if titleViewID != navigationBar.title.id {
+			let titleView = navigationBar.title.makeView()
+			navigationItem.titleView = titleView
+			titleViewID = navigationBar.title.id
+		}
 		
-		navigationItem.titleView = titleView
+		if let titleView = navigationItem.titleView {
+			navigationBar.title.update(titleView)
+		}
 	}
 }
 

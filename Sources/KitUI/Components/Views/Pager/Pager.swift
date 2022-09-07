@@ -10,13 +10,15 @@ public struct Pager: IViewProps, Equatable {
 		numberOfPages: 0,
 		pageAtIndex: { _ in return .vSpacer },
 		currentPage: 0,
-		onPageBecameCurrent: .empty
+		onPageBecameCurrent: .empty,
+		onPageScroll: .empty
 	)
 
 	public let numberOfPages: Int
 	public let pageAtIndex: (Int) -> MetaView
 	public let currentPage: Int
 	public let onPageBecameCurrent: ViewCommandWith<Int>
+	public let onPageScroll: ViewCommandWith<Double>
 	
 	public static func == (lhs: Pager, rhs: Pager) -> Bool {
 		false
