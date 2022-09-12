@@ -1,15 +1,15 @@
 import Foundation
 
 public struct NavigationBar: Equatable {
-	public let leftItems: [MetaView]?
+	public let leftItems: [BarItem]?
 	public let title: MetaView
-	public let rightItems: [MetaView]?
+	public let rightItems: [BarItem]?
 	public let style: Style
 	
 	public init(
-		leftItems: [MetaView]? = nil,
+		leftItems: [BarItem]? = nil,
 		title: MetaView,
-		rightItems: [MetaView]? = nil,
+		rightItems: [BarItem]? = nil,
 		style: Style
 	)
 	{

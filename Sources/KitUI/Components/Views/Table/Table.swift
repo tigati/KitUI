@@ -31,6 +31,7 @@ public struct Table: IViewProps, Equatable {
 		canMoveCell: nil,
 		proposedIndexPathOnMoveFromTo: nil,
 		onReorder: nil,
+		isEditing: false,
 		spacing: 0,
 		separator: .none,
 		bounces: true
@@ -47,6 +48,7 @@ public struct Table: IViewProps, Equatable {
 	let canMoveCell: ((IndexPath) -> Bool)?
 	let proposedIndexPathOnMoveFromTo: ((_ from: IndexPath, _ to: IndexPath) -> IndexPath)?
 	let onReorder: ViewCommandWith<(from: IndexPath, to: IndexPath)>?
+	let isEditing: Bool
 	let spacing: CGFloat
 	let separator: UITableViewCell.SeparatorStyle
 	let bounces: Bool
@@ -61,6 +63,7 @@ public struct Table: IViewProps, Equatable {
 		canMoveCell: ((IndexPath) -> Bool)?,
 		proposedIndexPathOnMoveFromTo: ((_ from: IndexPath, _ to: IndexPath) -> IndexPath)?,
 		onReorder: ViewCommandWith<(from: IndexPath, to: IndexPath)>?,
+		isEditing: Bool,
 		spacing: CGFloat,
 		separator: UITableViewCell.SeparatorStyle,
 		bounces: Bool
@@ -74,6 +77,7 @@ public struct Table: IViewProps, Equatable {
 		self.canMoveCell = canMoveCell
 		self.proposedIndexPathOnMoveFromTo = proposedIndexPathOnMoveFromTo
 		self.onReorder = onReorder
+		self.isEditing = isEditing
 		self.spacing = spacing
 		self.separator = separator
 		self.bounces = bounces

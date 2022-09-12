@@ -34,7 +34,6 @@ public final class TappableView: UIControl, IComponent {
 
 	public override var isHighlighted: Bool {
 		didSet {
-			guard props?.onHighlight != nil else { return }
 			updateVisualIfPropsAvaiable()
 		}
 	}

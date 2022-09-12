@@ -64,45 +64,64 @@ public final class RegularViewController: ViewController & IComponent {
 	}
 	
 	private func render(oldNavigationBar: NavigationBar?, newNavigationBar: NavigationBar?) {
-		if oldNavigationBar == newNavigationBar { return }
+		renderLeftItems(
+			oldItems: oldNavigationBar?.leftItems,
+			newItems: newNavigationBar?.leftItems
+		)
+		
+		renderTitleView(newNavigationBar?.title)
+		
+		renderRightItems(
+			oldItems: oldNavigationBar?.rightItems,
+			newItems: newNavigationBar?.rightItems
+		)
 
 		if let newNavigationBar = newNavigationBar {
 			navigationController?.isNavigationBarHidden = false
-			render(navigationBar: newNavigationBar)
 		} else {
 			navigationController?.isNavigationBarHidden = true
 		}
+		
+		
 	}
 	
-	private func render(navigationBar: NavigationBar) {
-		if let leftItems = navigationBar.leftItems {
-			let leftBarItems: [UIBarButtonItem] = leftItems.map { metaView in
-				let customView = metaView.makeView()
-				metaView.update(customView)
-				return UIBarButtonItem(customView: customView)
-			}
-			navigationItem.leftBarButtonItems = leftBarItems
+	private func renderTitleView(_ title: MetaView?) {
+		guard let title = title else {
+			navigationItem.titleView = nil
+			return
 		}
 		
-		if let rightItems = navigationBar.rightItems {
-			let rightBarItems: [UIBarButtonItem] = rightItems.map { metaView in
-				let customView = metaView.makeView()
-				let barButton = UIBarButtonItem(customView: customView)
-				metaView.update(customView)
-				return barButton
-			}
-			navigationItem.rightBarButtonItems = rightBarItems
-		}
-		
-		if titleViewID != navigationBar.title.id {
-			let titleView = navigationBar.title.makeView()
+		if titleViewID != title.id {
+			let titleView = title.makeView()
 			navigationItem.titleView = titleView
-			titleViewID = navigationBar.title.id
+			titleViewID = title.id
 		}
 		
 		if let titleView = navigationItem.titleView {
-			navigationBar.title.update(titleView)
+			title.update(titleView)
 		}
+	}
+	
+	private func renderLeftItems(oldItems: [BarItem]?, newItems: [BarItem]?) {
+		
+		guard newItems != oldItems else {
+			return
+		}
+		
+		let barItems = newItems?.map { $0.map() }
+		
+		navigationItem.leftBarButtonItems = barItems
+	}
+	
+	private func renderRightItems(oldItems: [BarItem]?, newItems: [BarItem]?) {
+		
+		guard newItems != oldItems else {
+			return
+		}
+		
+		let barItems = newItems?.map { $0.map() }
+		
+		navigationItem.rightBarButtonItems = barItems
 	}
 }
 

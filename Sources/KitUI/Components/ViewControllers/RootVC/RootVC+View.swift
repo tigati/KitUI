@@ -16,7 +16,9 @@ public final class RootViewController: ViewController, IComponent {
 		defer { self.props = props }
 
 		if props.childVC.type != self.props?.childVC.type {
+			removeChildVC()
 			addChildVC(props.childVC)
+			view.setNeedsLayout()
 		}
 
 		if let childViewController = childViewController {
@@ -30,6 +32,13 @@ public final class RootViewController: ViewController, IComponent {
 		if props.loadingView != self.props?.loadingView {
 			render(oldLoadingView: self.props?.loadingView, newLoadingView: props.loadingView)
 		}
+	}
+	
+	private func removeChildVC() {
+		childViewController?.dismiss(animated: false)
+		childViewController?.willMove(toParent: nil)
+		childViewController?.removeFromParent()
+		childViewController?.view.removeFromSuperview()
 	}
 
 	private func addChildVC(_ childVC: MetaVC) {
@@ -92,6 +101,8 @@ public final class RootViewController: ViewController, IComponent {
 	}
 
 	override public func viewDidLayoutSubviews() {
+		childViewController?.view.pin.all()
+		
 		loadingView?.pin.all()
 		
 		blurView?.pin.all()

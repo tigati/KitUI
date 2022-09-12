@@ -31,6 +31,7 @@ public final class TableView: UITableView, IComponent {
 	public func render(props: Table) {
 		self.separatorStyle = props.separator
 		self.bounces = props.bounces
+		setEditing(props.isEditing, animated: true)
 		guard self.props.changeID != props.changeID else {
 			self.props = props
 			return
@@ -57,7 +58,6 @@ public final class TableView: UITableView, IComponent {
 	// MARK: - Private methods
 	
 	private func setup() {
-		isEditing = true
 		keyboardDismissMode = .interactive
 		rowHeight = UITableView.automaticDimension
 		estimatedRowHeight = UITableView.automaticDimension
@@ -72,8 +72,6 @@ public final class TableView: UITableView, IComponent {
 		
 		backgroundView = nil
 		backgroundColor = .clear
-		
-		keyboardDismissMode = .onDrag
 		
 		delegate = self
 		dataSource = self
@@ -109,7 +107,14 @@ public final class TableView: UITableView, IComponent {
 		
 		guard let keyboardAnimationDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else { return }
 		
-		contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight, right: 0)
+		UIView.animate(withDuration: keyboardAnimationDuration.doubleValue) {
+			self.contentInset = UIEdgeInsets(
+				top: self.contentInset.top,
+				left: self.contentInset.left,
+				bottom: keyboardHeight,
+				right: self.contentInset.right
+			)
+		}
 	}
 	
 	private func updateCells(at indexPaths: [IndexPath]) {

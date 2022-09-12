@@ -18,8 +18,8 @@ extension Tappable {
 		// MARK: - Lifecycle
 
 		public init(
-			disabledOpacity: CGFloat,
-			pressedScale: CGFloat
+			disabledOpacity: CGFloat = 1.0,
+			pressedScale: CGFloat = 1.0
 		) {
 			self.disabledOpacity = disabledOpacity
 			self.pressedScale = pressedScale

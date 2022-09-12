@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 public enum ImageResource: Equatable {
 	case bundled(Bundled)
@@ -13,5 +14,11 @@ public enum ImageResource: Equatable {
 			self.name = name
 			self.bundle = bundle
 		}
+	}
+}
+
+extension ImageResource.Bundled {
+	public var uiImage: UIImage? {
+		UIImage(named: name, in: bundle, with: nil)
 	}
 }

@@ -12,6 +12,7 @@ public extension MetaView {
 		canMoveCell: ((IndexPath) -> Bool)? = nil,
 		proposedIndexPathOnMoveFromTo: ((IndexPath, IndexPath) -> IndexPath)? = nil,
 		onReorder: ViewCommandWith<(from: IndexPath, to: IndexPath)>? = nil,
+		isEditing: Bool = false,
 		spacing: CGFloat = 0,
 		separator: UITableViewCell.SeparatorStyle = .none,
 		bounces: Bool = true
@@ -27,6 +28,7 @@ public extension MetaView {
 				canMoveCell: canMoveCell,
 				proposedIndexPathOnMoveFromTo: proposedIndexPathOnMoveFromTo,
 				onReorder: onReorder,
+				isEditing: isEditing,
 				spacing: spacing,
 				separator: separator,
 				bounces: bounces
