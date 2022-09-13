@@ -1,11 +1,11 @@
 import UIKit
 
-extension Label {
+extension AttributedLabel {
 
 	public struct Style: Equatable {
 
 		public static let initial = Style(
-			font: .systemFont(ofSize: 16),
+			text: .initial,
 			color: .initial,
 			textAlignment: .left,
 			numberOfLines: 1,
@@ -13,10 +13,10 @@ extension Label {
 		)
 
 		/// Стиль текста
-		public let font: UIFont
+		public let text: TextStyle
 
 		/// Цвет текста
-		public fileprivate(set) var color: UIColor
+		public fileprivate(set) var fill: FillStyle
 
 		/// Выравнивание
 		public fileprivate(set) var textAlignment: NSTextAlignment
@@ -29,23 +29,50 @@ extension Label {
 		// MARK: - Lifecycle
 		
 		public init(
-			font: UIFont,
-			color: UIColor,
+			text: TextStyle,
+			fill: FillStyle,
 			textAlignment: NSTextAlignment,
 			numberOfLines: Int,
 			adjustsFontSizeToFitWidth: Bool = false
 		) {
-			self.font = font
-			self.color = color
+			self.text = text
+			self.fill = fill
 			self.textAlignment = textAlignment
 			self.numberOfLines = numberOfLines
 			self.adjustsFontSizeToFitWidth = adjustsFontSizeToFitWidth
 		}
 
+		public init(
+			text: TextStyle,
+			color: UIColor,
+			textAlignment: NSTextAlignment,
+			numberOfLines: Int,
+			adjustsFontSizeToFitWidth: Bool = false
+		) {
+			self.text = text
+			self.fill = .solid(color)
+			self.textAlignment = textAlignment
+			self.numberOfLines = numberOfLines
+			self.adjustsFontSizeToFitWidth = adjustsFontSizeToFitWidth
+		}
+		
+		public init(
+			text: TextStyle,
+			gradient: GradientStyle,
+			textAlignment: NSTextAlignment,
+			numberOfLines: Int,
+			adjustsFontSizeToFitWidth: Bool = false
+		) {
+			self.text = text
+			self.fill = .gradient(gradient)
+			self.textAlignment = textAlignment
+			self.numberOfLines = numberOfLines
+			self.adjustsFontSizeToFitWidth = adjustsFontSizeToFitWidth
+		}
 	}
 }
 
-extension Label.Style {
+extension AttributedLabel.Style {
 	public func numberOfLines(_ value: Int) -> Self {
 		var new = self
 		new.numberOfLines = value
@@ -60,7 +87,7 @@ extension Label.Style {
 	
 	public func color(_ value: UIColor) -> Self {
 		var new = self
-		new.color = value
+		new.fill = .solid(value)
 		return new
 	}
 }

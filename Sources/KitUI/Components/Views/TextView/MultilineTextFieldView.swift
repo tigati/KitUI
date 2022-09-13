@@ -87,7 +87,7 @@ public final class MultilineTextFieldView: UITextView, IComponent {
 		placeholderLabel.render(
 			props: .init(
 				text: props.placeholder ?? "",
-				style: .init(
+				style: AttributedLabel.Style(
 					text: props.style.placeholder,
 					color: props.style.placeholderColor,
 					textAlignment: props.style.textAlignment,
