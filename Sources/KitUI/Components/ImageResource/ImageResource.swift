@@ -19,6 +19,6 @@ public enum ImageResource: Equatable {
 
 extension ImageResource.Bundled {
 	public var uiImage: UIImage? {
-		UIImage(named: name, in: bundle, with: nil)
+		UIImage(named: name, in: bundle, compatibleWith: nil)
 	}
 }

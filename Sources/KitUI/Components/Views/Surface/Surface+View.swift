@@ -43,7 +43,9 @@ public final class SurfaceView: UIView, IComponent {
 		}
 		
 		layer.cornerRadius = props.radius
-		layer.cornerCurve = .continuous
+		if #available(iOS 13.0, *) {
+			layer.cornerCurve = .continuous
+		}
 		
 		if let border = props.border {
 			layer.borderColor = border.color.cgColor

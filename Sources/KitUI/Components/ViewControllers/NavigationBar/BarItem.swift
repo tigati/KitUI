@@ -85,14 +85,14 @@ extension BarItem {
 		let primaryAction = item.primaryAction.map { command in
 			UIAction { _ in command.perform() }
 		}
-		
+
 		let button = UIBarButtonItem(
 			title: item.title,
 			image: item.image,
 			primaryAction: primaryAction,
 			menu: item.menu.map { $0.map() }
 		)
-		
+
 		button.tintColor = item.tintColor
 		
 		return button
