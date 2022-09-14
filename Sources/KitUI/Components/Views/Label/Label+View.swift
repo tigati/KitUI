@@ -24,6 +24,7 @@ public class LabelView: UILabel, IComponent {
 		text = props.text
 		style = props.style
 		font = props.style.font
+		textColor = props.style.color
 		textAlignment = props.style.textAlignment
 		numberOfLines = props.style.numberOfLines
 		adjustsFontSizeToFitWidth = props.style.adjustsFontSizeToFitWidth

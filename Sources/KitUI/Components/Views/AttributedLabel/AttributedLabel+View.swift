@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 /// Лейбл с возможностью установки текста с настройками lineHeight и letter-spacing
-public class AttributedLabel: UILabel, IComponent {
+public class AttributedLabelView: UILabel, IComponent {
 
 	// MARK: - Private properties
 
@@ -64,7 +64,7 @@ public class AttributedLabel: UILabel, IComponent {
 
 	// MARK: - Public methods
 
-	public func render(props: Label) {
+	public func render(props: AttributedLabel) {
 		text = nil
 		text = props.text
 		style = props.style

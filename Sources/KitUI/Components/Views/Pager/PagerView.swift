@@ -41,10 +41,17 @@ public final class PagerView: ComponentView, IComponent {
 	
 	public func render(props: Pager) {
 		let oldProps = self.props
-		if props.numberOfPages != self.props.numberOfPages {
+		
+		guard self.props.changeID != props.changeID else {
+			self.props = props
+			return
+		}
+		
+		switch props.changeID.type {
+		case .reload:
 			self.props = props
 			collectionView.reloadData()
-		} else {
+		case .updateVisible:
 			self.props = props
 			updateVisibleCells()
 		}

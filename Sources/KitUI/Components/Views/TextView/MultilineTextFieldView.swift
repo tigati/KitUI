@@ -20,7 +20,7 @@ public final class MultilineTextFieldView: UITextView, IComponent {
 	
 	var props: Props = .initial
 	
-	let placeholderLabel = LabelView()
+	let placeholderLabel = AttributedLabelView()
 	
 	func setup() {
 		isUserInteractionEnabled = false

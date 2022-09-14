@@ -11,6 +11,8 @@ public final class TableView: UITableView, IComponent {
 	private var cellIdentifiers: [ObjectIdentifier: String] = [:]
 	private var headerFooterIdentifiers: [ObjectIdentifier: String] = [:]
 	
+	private var frozenContentOffsetForRowAnimation: CGPoint?
+	
 	// MARK: - Lifecycle
 	
 	init() {
@@ -45,13 +47,24 @@ public final class TableView: UITableView, IComponent {
 		case .update(let indexPaths):
 			updateCells(at: indexPaths)
 		case .updateVisible:
+			
 			let visCells = visibleCells
 			let count = visCells.count
 			let some = count + 1
+			
 			updateCells(at: indexPathsForVisibleRows ?? [])
 			let visibleSections = indexesOfVisibleSections
 			updateSectionHeader(at: visibleSections)
 			updateSectionFooter(at: visibleSections)
+			
+			let originalContentOffset = contentOffset
+			
+			beginUpdates()
+			endUpdates()
+			
+			if contentOffset != originalContentOffset {
+				frozenContentOffsetForRowAnimation = contentOffset
+			}
 		}
 	}
 	
@@ -118,7 +131,6 @@ public final class TableView: UITableView, IComponent {
 	}
 	
 	private func updateCells(at indexPaths: [IndexPath]) {
-		beginUpdates()
 		indexPaths.forEach { indexPath in
 			if
 				let cell = cellForRow(at: indexPath) as? ITableCellView,
@@ -127,11 +139,9 @@ public final class TableView: UITableView, IComponent {
 				item.update(cell.customContentView)
 			}
 		}
-		endUpdates()
 	}
 	
 	private func updateSectionHeader(at indexes: [Int]) {
-		beginUpdates()
 		indexes.forEach { index in
 			if
 				let section = headerView(forSection: index) as? ITableHeaderFooterView,
@@ -140,11 +150,9 @@ public final class TableView: UITableView, IComponent {
 				item.update(section.customContentView)
 			}
 		}
-		endUpdates()
 	}
 	
 	private func updateSectionFooter(at indexes: [Int]) {
-		beginUpdates()
 		indexes.forEach { index in
 			if
 				let section = footerView(forSection: index) as? ITableHeaderFooterView,
@@ -153,7 +161,6 @@ public final class TableView: UITableView, IComponent {
 				item.update(section.customContentView)
 			}
 		}
-		endUpdates()
 	}
 }
 
@@ -166,6 +173,16 @@ extension TableView: UITableViewDelegate {
 	
 	public func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
 		return false
+	}
+	
+	public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+		frozenContentOffsetForRowAnimation = nil
+	}
+	
+	public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+		if let overrideOffset = frozenContentOffsetForRowAnimation, scrollView.contentOffset != overrideOffset {
+			scrollView.setContentOffset(overrideOffset, animated: false)
+		}
 	}
 }
 

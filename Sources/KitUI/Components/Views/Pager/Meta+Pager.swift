@@ -2,6 +2,7 @@ import Foundation
 
 extension MetaView {
 	public static func pager(
+		changeID: PagerChangeID,
 		numberOfPages: Int,
 		pageAtIndex: @escaping (Int) -> MetaView,
 		currentPage: Int,
@@ -10,6 +11,7 @@ extension MetaView {
 	) -> MetaView {
 		.init(
 			props: Pager(
+				changeID: changeID,
 				numberOfPages: numberOfPages,
 				pageAtIndex: pageAtIndex,
 				currentPage: currentPage,

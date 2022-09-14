@@ -7,6 +7,7 @@ public struct Pager: IViewProps, Equatable {
 	public static let type: String = String(reflecting: Self.self)
 	
 	public static let initial = Pager(
+		changeID: .initial(),
 		numberOfPages: 0,
 		pageAtIndex: { _ in return .vSpacer },
 		currentPage: 0,
@@ -14,6 +15,7 @@ public struct Pager: IViewProps, Equatable {
 		onPageScroll: .empty
 	)
 
+	public let changeID: PagerChangeID
 	public let numberOfPages: Int
 	public let pageAtIndex: (Int) -> MetaView
 	public let currentPage: Int
@@ -25,25 +27,41 @@ public struct Pager: IViewProps, Equatable {
 	}
 }
 
-//public struct PagerChangeID: Equatable {
-//	private(set) var id: Int
-//	public var type: ChangeType {
-//		didSet {
-//			if id >= (Int.max - 100) {
-//				id = 0
-//			} else {
-//				id += 1
-//			}
-//		}
-//	}
-//
-//	public static let initial = Self(id: -1, type: .updateCurrent)
-//
-//	public enum ChangeType {
-//		case updateCurrent
-//	}
-//
-//	public static func == (lhs: Self, rhs: Self) -> Bool {
-//		lhs.id == rhs.id
-//	}
-//}
+public struct PagerChangeID: Equatable {
+	private(set) var id: UUID
+	public var type: ChangeType {
+		didSet {
+			id = UUID()
+		}
+	}
+	
+	public static func initial() -> PagerChangeID {
+		return PagerChangeID(id: UUID(), type: .reload)
+	}
+	
+	public enum ChangeType {
+		case reload
+		case updateVisible
+	}
+	
+	public static func == (lhs: PagerChangeID, rhs: PagerChangeID) -> Bool {
+		lhs.id == rhs.id
+	}
+	
+	public init(id: UUID, type: ChangeType) {
+		self.id = id
+		self.type = type
+	}
+	
+	public init(changeID: TableChangeID) {
+		self.id = changeID.id
+		self.type = {
+			switch changeID.type {
+			case .update, .updateVisible:
+				return .updateVisible
+			case .reload:
+				return .updateVisible
+			}
+		}()
+	}
+}
