@@ -94,7 +94,7 @@ extension BarItem {
 		)
 
 		button.tintColor = item.tintColor
-		
+
 		return button
 	}
 }
