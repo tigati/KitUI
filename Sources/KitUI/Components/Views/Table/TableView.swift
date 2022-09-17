@@ -56,12 +56,12 @@ public final class TableView: UITableView, IComponent {
 			let visibleSections = indexesOfVisibleSections
 			updateSectionHeader(at: visibleSections)
 			updateSectionFooter(at: visibleSections)
-			
+
 			let originalContentOffset = contentOffset
-			
+
 			beginUpdates()
 			endUpdates()
-			
+
 			if contentOffset != originalContentOffset {
 				frozenContentOffsetForRowAnimation = contentOffset
 			}
