@@ -108,7 +108,13 @@ public final class RegularViewController: ViewController & IComponent {
 			return
 		}
 		
-		let barItems = newItems?.map { $0.map() }
+		let barItems: [UIBarButtonItem]? = newItems?.enumerated().map { index, item in
+			let barItem = item.map()
+			barItem.tag = index
+			barItem.target = self
+			barItem.action = #selector(leftItemTapped)
+			return barItem
+		}
 		
 		navigationItem.leftBarButtonItems = barItems
 	}
@@ -119,9 +125,25 @@ public final class RegularViewController: ViewController & IComponent {
 			return
 		}
 		
-		let barItems = newItems?.map { $0.map() }
+		let barItems: [UIBarButtonItem]? = newItems?.enumerated().map { index, item in
+			let barItem = item.map()
+			barItem.tag = index
+			barItem.target = self
+			barItem.action = #selector(rightItemTapped)
+			return barItem
+		}
 		
 		navigationItem.rightBarButtonItems = barItems
+	}
+	
+	@objc
+	private func leftItemTapped(_ item: UIBarButtonItem) {
+		props?.navigationBar?.leftItems?[item.tag].onTap?.perform()
+	}
+	
+	@objc
+	private func rightItemTapped(_ item: UIBarButtonItem) {
+		props?.navigationBar?.rightItems?[item.tag].onTap?.perform()
 	}
 }
 

@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 
+@available(iOS 13, *)
 public struct Menu: Equatable {
 	public let title: String?
 	public let image: UIImage?
@@ -18,6 +19,7 @@ public struct Menu: Equatable {
 	}
 }
 
+@available(iOS 13, *)
 extension Menu {
 	public struct Action: Equatable {
 		public let title: String
@@ -39,6 +41,7 @@ extension Menu {
 	}
 }
 
+@available(iOS 13, *)
 extension Menu {
 	func map() -> UIMenu {
 		.init(
@@ -49,6 +52,7 @@ extension Menu {
 	}
 }
 
+@available(iOS 13, *)
 extension Menu.Action {
 	func map() -> UIAction {
 		UIAction(

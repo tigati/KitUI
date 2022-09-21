@@ -35,6 +35,15 @@ public enum BarItem: Equatable {
 		)
 	}
 	
+	var onTap: ViewCommand? {
+		switch self {
+		case let .regular(item):
+			return item.onTap
+		case let .system(item):
+			return item.onTap
+		}
+	}
+	
 //	public static func system(
 //		type: UIBarButtonItem.SystemItem,
 //		tintColor: UIColor,
@@ -110,7 +119,9 @@ extension BarItem {
 	
 	private func mapSystem(_ item: SystemBarItem) -> UIBarButtonItem {
 		let button = UIBarButtonItem(
-			systemItem: item.type
+			barButtonSystemItem: item.type,
+			target: nil,
+			action: nil
 		)
 		
 		button.tintColor = item.tintColor
@@ -119,9 +130,12 @@ extension BarItem {
 	}
 	
 	private func mapRegular(_ item: RegularBarItem) -> UIBarButtonItem {
+		
 		let button = UIBarButtonItem(
 			title: item.title,
-			image: item.image
+			style: .plain,
+			target: nil,
+			action: nil
 		)
 		
 		button.isEnabled = item.onTap != nil
