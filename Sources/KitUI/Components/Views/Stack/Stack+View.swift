@@ -122,6 +122,10 @@ public final class StackView: UIView, IComponent {
 		var views: [UIView?] = getComponentViews()
 		
 		for changes in changeSet {
+			for (source, target) in changes.elementMoved {
+				views.swapAt(source.element, target.element)
+			}
+			
 			for delete in changes.elementDeleted {
 				let view = views[delete.element]
 				view?.removeFromSuperview()
@@ -140,9 +144,6 @@ public final class StackView: UIView, IComponent {
 				if let component = views[update.element] {
 					changes.data[update.element].update(component)
 				}
-			}
-			for (source, target) in changes.elementMoved {
-				views.swapAt(source.element, target.element)
 			}
 		}
 		

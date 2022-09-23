@@ -100,7 +100,7 @@ extension PagerView: UICollectionViewDelegateFlowLayout {
 	
 	public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
 		let page = Int(self.collectionView.contentOffset.x / self.collectionView.frame.size.width)
-		
+		endEditing(true)
 		props.onPageBecameCurrent.perform(with: page)
 	}
 	
