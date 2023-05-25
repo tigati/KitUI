@@ -19,6 +19,11 @@ public final class TableView: UITableView, IComponent {
 		super.init(frame: .zero, style: .grouped)
 		setup()
 	}
+    
+    @objc
+    func _parentScrollView() -> UIScrollView? {
+        return nil
+    }
 	
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
