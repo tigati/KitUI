@@ -167,6 +167,10 @@ public final class TableView: UITableView, IComponent {
 			}
 		}
 	}
+    
+    public override func touchesShouldCancel(in view: UIView) -> Bool {
+        true
+    }
 }
 
 // MARK: - UITableViewDelegate

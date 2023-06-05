@@ -36,7 +36,8 @@ public final class ScrollView: UIScrollView, IComponent {
 
 	func setup() {
 		contentInsetAdjustmentBehavior = .always
-		keyboardDismissMode = .interactive
+        keyboardDismissMode = .interactive
+        alwaysBounceVertical = true
 		let notificationCenter = NotificationCenter.default
 		
 		notificationCenter.addObserver(
