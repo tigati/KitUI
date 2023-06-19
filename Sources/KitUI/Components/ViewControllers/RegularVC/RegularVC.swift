@@ -11,6 +11,7 @@ public struct RegularVC: IViewProps, Equatable {
 	public let navigationBar: NavigationBar?
 	public let view: MetaView
 	public let modalVC: ModalVC?
+    public let bottomView: MetaView?
 	public let onViewDidLoad: ViewCommand?
 	public let onViewDidAppear: ViewCommand?
 	public let onViewDidDisappear: ViewCommand?
@@ -20,6 +21,7 @@ public struct RegularVC: IViewProps, Equatable {
 	public init(
 		navigationBar: NavigationBar?,
 		view: MetaView,
+        bottomView: MetaView? = nil,
 		modalVC: ModalVC? = nil,
 		onViewDidLoad: ViewCommand? = nil,
 		onViewDidAppear: ViewCommand? = nil,
@@ -27,6 +29,7 @@ public struct RegularVC: IViewProps, Equatable {
 	) {
 		self.navigationBar = navigationBar
 		self.view = view
+        self.bottomView = bottomView
 		self.modalVC = modalVC
 		self.onViewDidLoad = onViewDidLoad
 		self.onViewDidAppear = onViewDidAppear

@@ -102,6 +102,7 @@ public struct TableChangeID: Equatable {
 	
 	public enum ChangeType {
 		case reload
+        case insertCellsAt([IndexPath])
 		case update([IndexPath])
 		case updateVisible
 	}

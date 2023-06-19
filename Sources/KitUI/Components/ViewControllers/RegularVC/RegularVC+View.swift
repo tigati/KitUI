@@ -10,6 +10,8 @@ public final class RegularViewController: ViewController & IComponent {
 	// MARK: - Public properties
 	
 	public lazy var contentView = RootView()
+    
+    private var bottomView: BottomView?
 	
 	public var titleViewID: String?
 	
@@ -61,6 +63,13 @@ public final class RegularViewController: ViewController & IComponent {
 		)
 		
 		render(oldProps: self.props?.modalVC, props: props.modalVC)
+        
+        if let bottomView = props.bottomView {
+            renderBottomView(metaView: bottomView)
+        } else {
+            bottomView?.removeFromSuperview()
+            bottomView = nil
+        }
 	}
 	
 	private func render(oldNavigationBar: NavigationBar?, newNavigationBar: NavigationBar?) {
@@ -81,8 +90,6 @@ public final class RegularViewController: ViewController & IComponent {
 		} else {
 			navigationController?.isNavigationBarHidden = true
 		}
-		
-		
 	}
 	
 	private func renderTitleView(_ title: MetaView?) {
@@ -145,6 +152,31 @@ public final class RegularViewController: ViewController & IComponent {
 	private func rightItemTapped(_ item: UIBarButtonItem) {
 		props?.navigationBar?.rightItems?[item.tag].onTap?.perform()
 	}
+    
+    private func renderBottomView(metaView: MetaView) {
+        if bottomView == nil {
+            let newView = BottomView()
+            bottomView = newView
+            view.addSubview(newView)
+        }
+        
+        if let bottomView {
+            bottomView.render(metaView: metaView)
+            let height = bottomView.contentView?.sizeThatFits(CGSize(width: view.bounds.width, height: 0)).height ?? 0
+            additionalSafeAreaInsets = .init(top: 0, left: 0, bottom: height, right: 0)
+            view.setNeedsLayout()
+        }
+    }
+    
+    public override func viewDidLayoutSubviews() {
+        if let bottomView {
+            bottomView.pin.horizontally().bottom().height(view.safeAreaInsets.bottom)
+        }
+    }
+    
+    public override func viewSafeAreaInsetsDidChange() {
+        view.setNeedsLayout()
+    }
 }
 
 extension RegularViewController: UINavigationBarDelegate {

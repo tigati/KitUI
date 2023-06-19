@@ -49,6 +49,8 @@ public final class TableView: UITableView, IComponent {
 		switch props.changeID.type {
 		case .reload:
 			reloadData()
+        case let .insertCellsAt(indexPaths):
+            insertRows(at: indexPaths, with: .automatic)
 		case .update(let indexPaths):
 			updateCells(at: indexPaths)
 		case .updateVisible:
@@ -219,7 +221,7 @@ extension TableView: UITableViewDataSource {
 		if let storedCellIdentifier = cellIdentifiers[classIdentifier] {
 			cellIdentifier = storedCellIdentifier
 		} else {
-			let newCellIdentifier = String(describing: cellType)
+            let newCellIdentifier = String(describing: cellType)
 			register(cellType, forCellReuseIdentifier: newCellIdentifier)
 			cellIdentifiers[classIdentifier] = newCellIdentifier
 			cellIdentifier = newCellIdentifier

@@ -59,7 +59,7 @@ public struct PagerChangeID: Equatable {
 			switch changeID.type {
 			case .update, .updateVisible:
 				return .updateVisible
-			case .reload:
+			case .reload, .insertCellsAt:
 				return .updateVisible
 			}
 		}()
